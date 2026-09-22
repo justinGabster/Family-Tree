@@ -294,6 +294,47 @@ h4,
   font-size: 1.5rem;
 }
 
+/* Methodology Button */
+.methodology-btn {
+  position: absolute;
+  top: 5rem;
+  right: 2rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  padding: 0.8rem 1.6rem;
+  border-radius: 30px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-med);
+}
+
+.methodology-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-color);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.methodology-btn:active {
+  transform: translateY(0);
+}
+
+.methodology-btn-icon {
+  font-size: 1.15rem;
+}
+
+.methodology-btn-text {
+  letter-spacing: 0.02em;
+}
+
 /* Nodes Container */
 .nodes-container {
   display: flex;
@@ -454,6 +495,8 @@ h4,
   border-radius: 1.5rem;
   max-width: 650px;
   width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
   position: relative;
   text-align: left;
   box-shadow: 0 30px 60px rgba(0,0,0,0.3);
@@ -510,8 +553,54 @@ h4,
   color: var(--text-secondary);
 }
 
+/* Methodology Modal Styling */
+.methodology-modal-content {
+  color: var(--text-primary);
+}
+
+.methodology-header {
+  margin-bottom: 1.5rem;
+}
+
+.methodology-header .relation-tag {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.methodology-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.35rem;
+  color: var(--text-primary);
+}
+
+.methodology-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 0;
+}
+
+.methodology-body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.methodology-body p {
+  margin: 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+  .methodology-btn {
+    position: static;
+    margin-top: -2.5rem;
+    margin-bottom: 2rem;
+  }
+
   .tree-container::before {
     left: 2rem;
   }

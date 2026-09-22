@@ -67,6 +67,12 @@ app.innerHTML = `
           <span class="season-icon">${getSeasonIcon(gen)}</span>
           <h2 class="serif">${getGenTitle(gen)}</h2>
         </div>
+        ${gen === 1 ? `
+          <button class="methodology-btn" id="methodology-btn" type="button" aria-label="Methodology">
+            <span class="methodology-btn-icon">📖</span>
+            <span class="methodology-btn-text">Methodology</span>
+          </button>
+        ` : ''}
         <div class="nodes-container">
           ${groupedData[gen].map(member => `
             <div class="node-wrapper">
@@ -154,6 +160,26 @@ cards.forEach(card => {
 closeBtn.addEventListener('click', () => {
   modal.classList.remove('active');
 });
+
+const methodologyBtn = document.getElementById('methodology-btn');
+if (methodologyBtn) {
+  methodologyBtn.addEventListener('click', () => {
+    modalBodyContent.innerHTML = `
+      <div class="methodology-modal-content">
+        <div class="methodology-header">
+          <span class="relation-tag">Project Overview</span>
+          <h2 class="serif">Methodology</h2>
+          <p class="methodology-subtitle">How this family tree was researched and preserved</p>
+        </div>
+        <div class="methodology-body">
+          <p>To build this family tree, I gathered stories and information by reaching out to our older and distant relatives, treating the whole thing like a personal research project. For my grandparents, these casual interviews brought back fond memories, everyday stories, and what they were like as people. I was also lucky enough to find old family albums, keepsakes, and journals with real vintage photos, which let me match their stories with clear faces from their era.</p>
+          <p>Things were a bit trickier for my great-grandparents since no physical photographs survived through the years. Instead of leaving their profiles blank, I based their bios entirely on the oral stories passed down by our relatives. By cross-checking the details everyone remembered about their work, character, and life in the community, I was able to piece together an honest picture of who they were at the roots of our family.</p>
+        </div>
+      </div>
+    `;
+    modal.classList.add('active');
+  });
+}
 
 modal.addEventListener('click', (e) => {
   if (e.target === modal) {
