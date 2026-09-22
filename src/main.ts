@@ -6,31 +6,36 @@ import { initLeaves } from './leaves';
 // Helper to get season from generation
 const getSeasonForGen = (gen: number): string => {
   switch (gen) {
-    case 1: return 'autumn';
+    case 1: return 'spring';
     case 2: return 'summer';
-    case 3: return 'spring';
+    case 3: return 'autumn';
     case 4: return 'winter';
-    default: return 'autumn';
+    default: return 'spring';
   }
 };
 
 const getSeasonIcon = (gen: number): string => {
   switch (gen) {
-    case 1: return '??'; // Autumn
-    case 2: return '??'; // Summer
-    case 3: return '??'; // Spring
-    case 4: return '??'; // Winter
-    default: return '??';
+    case 1: // Spring - Sprout
+      return '🌱';
+    case 2: // Summer - Sun
+      return '☀️';
+    case 3: // Autumn - Maple Leaf
+      return '🍁';
+    case 4: // Winter - Snowflake
+      return '❄️';
+    default:
+      return '🌱';
   }
 };
 
 const getGenTitle = (gen: number): string => {
   switch (gen) {
-    case 1: return 'Generation 1: Modern Era & Current';
-    case 2: return 'Generation 2: Maturation & Flourishing';
-    case 3: return 'Generation 3: Foundations & Growth';
-    case 4: return 'Generation 4: Roots & Ancestors';
-    default: return `Generation ${gen}`;
+    case 1: return '1st Generation: The Future & Branches';
+    case 2: return '2nd Generation: The Parents & Trunks';
+    case 3: return '3rd Generation: The Grandparents & Foundations';
+    case 4: return '4th Generation: The Great Grandparents & Roots';
+    default: return `${gen}th Generation`;
   }
 };
 
@@ -49,13 +54,11 @@ familyData.forEach(member => {
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
 app.innerHTML = `
-  <section class="hero">
-    <h1 class="serif">Seasons of Generations</h1>
-    <p>Journey through the timeline of our family tree. Watch the seasons change as we trace our roots from the historic winter of our ancestors to the vibrant autumn of the present.</p>
-    <div class="scroll-indicator">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-    </div>
-  </section>
+  <!-- Tree background container with flashlight effect -->
+  <div class="tree-bg-container">
+    <div class="tree-base-layer"></div>
+    <div class="tree-color-layer"></div>
+  </div>
 
   <div class="tree-container">
     ${[1, 2, 3, 4].map(gen => `
@@ -74,7 +77,7 @@ app.innerHTML = `
                 <div class="card-content">
                   <span class="relation-tag">${member.relation}</span>
                   <h3 class="serif">${member.name}</h3>
-                  ${member.lifespan ? `<div class="lifespan">${member.lifespan}</div>` : ''}
+                  ${member.birthyear ? `<div class="lifespan">${member.birthyear}</div>` : ''}
                   <p class="short-bio">${member.shortBio}</p>
                 </div>
               </div>
@@ -130,26 +133,16 @@ cards.forEach(card => {
 
     if (member) {
       modalBodyContent.innerHTML = `
-        <div class="modal-header">
+        <div class="avatar-container">
           ${member.photoUrl && !member.photoUrl.startsWith('[PASTE')
-          ? `<img src="${member.photoUrl}" alt="${member.name}" class="modal-avatar" onerror="this.style.display='none'">`
-          : `<div class="avatar-container" style="width:120px;height:120px;">${member.name.charAt(0)}</div>`}
-          <div>
-            <span class="relation-tag">${member.relation}</span>
-            <h2 class="serif">${member.name}</h2>
-            ${member.lifespan ? `<div class="lifespan">${member.lifespan}</div>` : ''}
-          </div>
+          ? `<img src="${member.photoUrl}" alt="${member.name}" style="width: 100%; height: 100%; object-fit: cover;" />`
+          : `<span>${member.name.charAt(0)}</span>`}
         </div>
-        <div class="modal-body">
-          <p>${member.shortBio}</p>
-          ${member.notableMilestones && member.notableMilestones.length > 0 && !member.notableMilestones[0].startsWith('[PASTE') ? `
-            <div class="modal-milestones">
-              <h4>Notable Milestones</h4>
-              <ul>
-                ${member.notableMilestones.map(m => `<li>${m}</li>`).join('')}
-              </ul>
-            </div>
-          ` : ''}
+        <div class="card-content">
+          <span class="relation-tag">${member.relation}</span>
+          <h3 class="serif">${member.name}</h3>
+          <p class="lifespan">${member.birthyear}</p>
+          <p class="bio">${member.shortBio}</p>
         </div>
       `;
 
@@ -166,6 +159,13 @@ modal.addEventListener('click', (e) => {
   if (e.target === modal) {
     modal.classList.remove('active');
   }
+});
+
+// Track mouse for flashlight effect (accounting for scroll position)
+window.addEventListener('pointermove', (e) => {
+  const scrollTop = app.scrollTop;
+  document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+  document.documentElement.style.setProperty('--mouse-y', `${e.clientY + scrollTop}px`);
 });
 
 // Initialize falling leaves
