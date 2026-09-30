@@ -3,113 +3,377 @@ import { familyData } from './familyData';
 import type { FamilyMember } from './familyData';
 import { initLeaves } from './leaves';
 
-// Helper to get season from generation
-const getSeasonForGen = (gen: number): string => {
-  switch (gen) {
-    case 1: return 'spring';
-    case 2: return 'summer';
-    case 3: return 'autumn';
-    case 4: return 'winter';
-    default: return 'spring';
+// Helper to look up member by id
+const getMember = (id: string): FamilyMember => {
+  const member = familyData.find(m => m.id === id);
+  if (!member) {
+    return {
+      id,
+      name: id,
+      relation: '',
+      generation: 1,
+      photoUrl: ''
+    };
   }
+  return member;
 };
 
-const getSeasonIcon = (gen: number): string => {
-  switch (gen) {
-    case 1: // Spring - Sprout
-      return '🌱';
-    case 2: // Summer - Sun
-      return '☀️';
-    case 3: // Autumn - Maple Leaf
-      return '🍁';
-    case 4: // Winter - Snowflake
-      return '❄️';
-    default:
-      return '🌱';
-  }
+// Helper for Panel 1 large horizontal cards
+const renderHorizontalCard = (
+  id: string,
+  style: string
+): string => {
+  const member = getMember(id);
+  const initial = member.name.charAt(0).toUpperCase();
+  const hasPhoto = member.photoUrl && !member.photoUrl.startsWith('[PASTE');
+  const avatarHtml = hasPhoto
+    ? `<img src="${member.photoUrl}" alt="${member.name}" onerror="this.parentElement.innerHTML='${initial}'" />`
+    : `<span>${initial}</span>`;
+
+  return `
+    <div 
+      class="family-card horizontal-card" 
+      style="${style}" 
+      data-id="${member.id}" 
+      tabindex="0" 
+      role="button" 
+      aria-label="${member.name}"
+    >
+      <div class="avatar-container horizontal-avatar">
+        ${avatarHtml}
+      </div>
+      <div class="card-content horizontal-content">
+        <h3 class="serif card-name horizontal-name">${member.name}</h3>
+      </div>
+    </div>
+  `;
 };
 
-const getGenTitle = (gen: number): string => {
-  switch (gen) {
-    case 1: return '1st Generation: The Future & Branches';
-    case 2: return '2nd Generation: The Parents & Trunks';
-    case 3: return '3rd Generation: The Grandparents & Foundations';
-    case 4: return '4th Generation: The Great Grandparents & Roots';
-    default: return `${gen}th Generation`;
-  }
+// Helper for Panels 2, 3, 4 individual vertical resting cards
+const renderVerticalCard = (
+  id: string,
+  style: string,
+  extraClasses = '',
+  overrideName?: string
+): string => {
+  const member = getMember(id);
+  const displayName = overrideName || member.name;
+  const initial = displayName.charAt(0).toUpperCase();
+
+  const isUnclickable = extraClasses.includes('card-unclickable') || id === 'siblings';
+  const hasPhoto = member.photoUrl && !member.photoUrl.startsWith('[PASTE');
+  const avatarHtml = hasPhoto
+    ? `<img src="${member.photoUrl}" alt="${displayName}" onerror="this.parentElement.innerHTML='${initial}'" />`
+    : `<span>${initial}</span>`;
+
+  return `
+    <div 
+      class="family-card vertical-card ${extraClasses}" 
+      style="${style}" 
+      ${!isUnclickable ? `data-id="${member.id}" tabindex="0" role="button"` : ''} 
+      aria-label="${displayName}"
+    >
+      <div class="avatar-container vertical-avatar">
+        ${avatarHtml}
+      </div>
+      <div class="card-content vertical-content">
+        <h3 class="serif card-name vertical-name">${displayName}</h3>
+      </div>
+    </div>
+  `;
 };
 
-// Group data by generation
-const groupedData: Record<number, FamilyMember[]> = {
-  1: [], 2: [], 3: [], 4: []
-};
+// Helper to render compact horizontal capsules (strictly for Calalang siblings on Panel 4)
+const renderCapsule = (
+  id: string,
+  style: string,
+  extraClasses = '',
+  overrideName?: string
+): string => {
+  const member = getMember(id);
+  const displayName = overrideName || member.name;
+  const initial = displayName.charAt(0).toUpperCase();
 
-familyData.forEach(member => {
-  if (groupedData[member.generation]) {
-    groupedData[member.generation].push(member);
-  }
-});
+  const hasPhoto = member.photoUrl && !member.photoUrl.startsWith('[PASTE');
+  const avatarHtml = hasPhoto
+    ? `<img src="${member.photoUrl}" alt="${displayName}" onerror="this.parentElement.innerHTML='${initial}'" />`
+    : `<span>${initial}</span>`;
+
+  return `
+    <div 
+      class="family-capsule ${extraClasses}" 
+      style="${style}" 
+      data-id="${member.id}" 
+      tabindex="0" 
+      role="button" 
+      aria-label="${displayName}"
+    >
+      <div class="capsule-avatar">
+        ${avatarHtml}
+      </div>
+      <span class="capsule-name">${displayName}</span>
+    </div>
+  `;
+};
 
 // Build HTML Structure
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
 app.innerHTML = `
-  <!-- Tree background container with flashlight effect -->
+  <!-- Persistent Methodology Button (Top Left) -->
+  <button class="methodology-btn" id="methodology-btn" type="button" aria-label="Methodology">
+    <span class="methodology-btn-icon">📖</span>
+    <span class="methodology-btn-text">Methodology</span>
+  </button>
+
+  <!-- Tree background container with flashlight effect (fixed full viewport, zero drift) -->
   <div class="tree-bg-container">
     <div class="tree-base-layer"></div>
     <div class="tree-color-layer"></div>
   </div>
 
   <div class="tree-container">
-    ${[1, 2, 3, 4].map(gen => `
-      <section class="generation-section" id="gen-${gen}" data-season="${getSeasonForGen(gen)}">
+    
+    <!-- ========================================================
+         PANEL 1: GENERATION 1 (The Children / Future)
+         Large Horizontal Cards (Photo left, Name right)
+         ======================================================== -->
+    <section class="generation-section" id="gen-1" data-season="spring">
+      <div class="panel-inner">
+        
+        <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">${getSeasonIcon(gen)}</span>
-          <h2 class="serif">${getGenTitle(gen)}</h2>
+          <span class="season-icon">🌱</span>
+          <h2 class="serif">1st Generation: The Future & Branches</h2>
         </div>
-        ${gen === 1 ? `
-          <button class="methodology-btn" id="methodology-btn" type="button" aria-label="Methodology">
-            <span class="methodology-btn-icon">📖</span>
-            <span class="methodology-btn-text">Methodology</span>
-          </button>
-        ` : ''}
-        <div class="nodes-container">
-          ${groupedData[gen].map(member => `
-            <div class="node-wrapper">
-              <div class="family-card" data-id="${member.id}">
-                <div class="avatar-container">
-                  ${member.photoUrl && !member.photoUrl.startsWith('[PASTE') ? `<img src="${member.photoUrl}" alt="${member.name}" onerror="this.style.display='none'">` : member.name.charAt(0)}
-                </div>
-                <div class="card-content">
-                  <span class="relation-tag">${member.relation}</span>
-                  <h3 class="serif">${member.name}</h3>
-                  ${member.birthyear ? `<div class="lifespan">${member.birthyear}</div>` : ''}
-                  <p class="short-bio">${member.shortBio}</p>
-                </div>
-              </div>
-            </div>
-          `).join('')}
+
+        <!-- 1st Generation Large Horizontal Cards -->
+        ${renderHorizontalCard('justin', 'left: 28%; top: 38%;')}
+        ${renderHorizontalCard('lance', 'left: 72%; top: 38%;')}
+
+        <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, EXACT EDGES) -->
+        <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <!-- Lines drop from bottom center of Justin and Lance cards -->
+          <line x1="280" y1="465" x2="280" y2="620" />
+          <line x1="720" y1="465" x2="720" y2="620" />
+          <path d="M 280 620 L 720 620" />
+          <line x1="500" y1="620" x2="500" y2="700" />
+          
+          <!-- From bottom of pill straight down to Generation 2 -->
+          <line x1="500" y1="740" x2="500" y2="1000" />
+        </svg>
+
+        <!-- Single-Line Connector Pill Badge -->
+        <div class="connector-pill" style="left: 50%; top: 72%;">Children of Cristina and Jeffrey</div>
+      </div>
+
+      <!-- Bouncing Scroll Down Indicator -->
+      <button class="scroll-indicator" data-target="#gen-2" aria-label="Scroll to Generation 2">
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" /></svg>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         PANEL 2: GENERATION 2 (Parents & Direct Aunts/Uncles)
+         Individual Vertical Cards with Adequate Gap Spacing
+         ======================================================== -->
+    <section class="generation-section" id="gen-2" data-season="summer">
+      <div class="panel-inner">
+        <!-- Right-Aligned Generation Title Header -->
+        <div class="generation-header">
+          <span class="season-icon">☀️</span>
+          <h2 class="serif">2nd Generation: The Parents & Trunks</h2>
         </div>
-      </section>
-    `).join('')}
+
+        <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, ZERO INTERSECTIONS) -->
+        <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <!-- Inflow from Gen 1 at x=500, splits down into top of Cristina & Jeffrey cards -->
+          <line x1="500" y1="0" x2="500" y2="100" />
+          <path d="M 240 100 L 680 100" />
+          <line x1="240" y1="100" x2="240" y2="170" />
+          <line x1="680" y1="100" x2="680" y2="170" />
+
+          <!-- Under Cristina: connects down to Child of Flordeliza and Domingo -->
+          <line x1="240" y1="330" x2="240" y2="560" />
+          <line x1="240" y1="600" x2="240" y2="750" />
+          <line x1="240" y1="750" x2="180" y2="750" />
+          <line x1="180" y1="750" x2="180" y2="1000" />
+
+          <!-- Under Jeffrey: connects to Children of Florinda and Marcelino -->
+          <line x1="680" y1="330" x2="680" y2="420" />
+          <line x1="680" y1="420" x2="540" y2="420" />
+          <line x1="540" y1="420" x2="540" y2="480" />
+
+          <!-- Children of Florinda and Marcelino splits right into Janice, Jerome, Jefferex -->
+          <line x1="640" y1="500" x2="760" y2="500" />
+          <line x1="760" y1="250" x2="760" y2="750" />
+          <line x1="760" y1="250" x2="810" y2="250" />
+          <line x1="760" y1="500" x2="810" y2="500" />
+          <line x1="760" y1="750" x2="810" y2="750" />
+
+          <!-- Downwards branches into Generation 3 (Marcelino & Florida) -->
+          <line x1="540" y1="520" x2="540" y2="800" />
+          <line x1="540" y1="800" x2="500" y2="800" />
+          <line x1="500" y1="800" x2="500" y2="1000" />
+          <line x1="540" y1="800" x2="760" y2="800" />
+          <line x1="760" y1="800" x2="760" y2="1000" />
+        </svg>
+
+        <!-- Generation 2 Distinct Vertical Cards (Never Overlapping) -->
+        ${renderVerticalCard('cristina', 'left: 24%; top: 25%;')}
+        ${renderVerticalCard('jeffrey', 'left: 68%; top: 25%;')}
+
+        <!-- Sibling vertical cards stacked on right with generous spacing -->
+        ${renderVerticalCard('janice', 'left: 86%; top: 25%;')}
+        ${renderVerticalCard('jerome', 'left: 86%; top: 50%;')}
+        ${renderVerticalCard('jefferex', 'left: 86%; top: 75%;')}
+
+        <!-- Single-Line Connector Pill Badges -->
+        <div class="connector-pill" style="left: 24%; top: 58%;">Child of Flordeliza and Domingo</div>
+        <div class="connector-pill" style="left: 54%; top: 50%;">Children of Florinda and Marcelino</div>
+      </div>
+
+      <!-- Bouncing Scroll Down Indicator -->
+      <button class="scroll-indicator" data-target="#gen-3" aria-label="Scroll to Generation 3">
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" /></svg>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         PANEL 3: GENERATION 3 (Grandparents & Siblings)
+         Distinct Vertical Cards with Vertical Separation
+         ======================================================== -->
+    <section class="generation-section" id="gen-3" data-season="autumn">
+      <div class="panel-inner">
+        <!-- Right-Aligned Generation Title Header -->
+        <div class="generation-header">
+          <span class="season-icon">🍁</span>
+          <h2 class="serif">3rd Generation: The Grandparents & Foundations</h2>
+        </div>
+
+        <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, CLEAN DROP) -->
+        <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <!-- Left branch: Enters at x=180, drops straight into Flordeliza, then into Domingo, then into Pill -->
+          <line x1="180" y1="0" x2="180" y2="200" />
+          <line x1="180" y1="360" x2="180" y2="480" />
+          <line x1="180" y1="640" x2="180" y2="760" />
+          <line x1="180" y1="800" x2="180" y2="1000" />
+
+          <!-- Center: Enters at x=500, drops into Marcelino, then into Pill, then down to Gen 4 -->
+          <line x1="500" y1="0" x2="500" y2="270" />
+          <line x1="500" y1="430" x2="500" y2="560" />
+          <line x1="500" y1="600" x2="500" y2="1000" />
+
+          <!-- Right branch: Enters at x=760, connects into Florida, then into Filomena -->
+          <line x1="760" y1="0" x2="760" y2="100" />
+          <line x1="760" y1="100" x2="780" y2="100" />
+          <line x1="780" y1="100" x2="780" y2="200" />
+          <line x1="780" y1="360" x2="780" y2="480" />
+        </svg>
+
+        <!-- Generation 3 Distinct Vertical Cards (Completely Separated) -->
+        ${renderVerticalCard('flordeliza', 'left: 18%; top: 28%;')}
+        ${renderVerticalCard('domingo', 'left: 18%; top: 56%;')}
+        ${renderVerticalCard('marcelino', 'left: 50%; top: 35%;')}
+        ${renderVerticalCard('florida', 'left: 78%; top: 28%;')}
+        ${renderVerticalCard('filomena', 'left: 78%; top: 56%;')}
+
+        <!-- Single-Line Connector Pill Badges -->
+        <div class="connector-pill" style="left: 18%; top: 78%;">Child of Timoteo and Maria</div>
+        <div class="connector-pill" style="left: 50%; top: 58%;">Children of Pablo and Gloria</div>
+      </div>
+
+      <!-- Bouncing Scroll Down Indicator -->
+      <button class="scroll-indicator" data-target="#gen-4" aria-label="Scroll to Generation 4">
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" /></svg>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         PANEL 4: GENERATION 4 (Roots & Extended Ancestry)
+         Clean Timoteo & Maria Inflow + Compact Siblings Capsule
+         ======================================================== -->
+    <section class="generation-section" id="gen-4" data-season="winter">
+      <div class="panel-inner">
+        <!-- Right-Aligned Generation Title Header -->
+        <div class="generation-header">
+          <span class="season-icon">❄️</span>
+          <h2 class="serif">4th Generation: The Great Grandparents & Roots</h2>
+        </div>
+
+        <!-- Clean Solid Orthogonal Connector Lines (ZERO STRAY LINES) -->
+        <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <!-- Left branch: Inflow enters at x=180 directly from Child of Timoteo and Maria -->
+          <!-- Drops straight into Timoteo, then continues straight into Maria. NO STRAY LINES! -->
+          <line x1="180" y1="0" x2="180" y2="200" />
+          <line x1="180" y1="360" x2="180" y2="600" />
+
+          <!-- Center: Inflow from Marcelino at x=500 into Gloria, then down to Siblings capsule -->
+          <line x1="500" y1="0" x2="500" y2="200" />
+          <line x1="500" y1="360" x2="500" y2="560" />
+
+          <!-- From right side of Siblings capsule into Calalang vertical bracket spine -->
+          <line x1="570" y1="580" x2="670" y2="580" />
+          <line x1="670" y1="180" x2="670" y2="900" />
+
+          <!-- 9 Horizontal branches connecting into Calalang capsules -->
+          <line x1="670" y1="180" x2="740" y2="180" />
+          <line x1="670" y1="270" x2="740" y2="270" />
+          <line x1="670" y1="360" x2="740" y2="360" />
+          <line x1="670" y1="450" x2="740" y2="450" />
+          <line x1="670" y1="540" x2="740" y2="540" />
+          <line x1="670" y1="630" x2="740" y2="630" />
+          <line x1="670" y1="720" x2="740" y2="720" />
+          <line x1="670" y1="810" x2="740" y2="810" />
+          <line x1="670" y1="900" x2="740" y2="900" />
+        </svg>
+
+        <!-- Generation 4 Distinct Vertical Cards -->
+        ${renderVerticalCard('timoteo', 'left: 18%; top: 28%;')}
+        ${renderVerticalCard('maria', 'left: 18%; top: 68%;')}
+
+        <!-- Center: Gloria Adornado (distinct vertical card) -->
+        ${renderVerticalCard('gloria', 'left: 50%; top: 28%;')}
+        
+        <!-- Center: Siblings (Restored to clean, standard capsule size) -->
+        <div class="connector-pill siblings-capsule" style="left: 50%; top: 58%;" aria-label="Siblings">
+          Siblings
+        </div>
+
+        <!-- Right Side: 9 Calalang Siblings Stacked Vertically as Compact Capsules -->
+        <!-- Shifted downward starting at top: 18% so top-right header has ample clearance -->
+        ${renderCapsule('pablo', 'left: 84%; top: 18%;')}
+        ${renderCapsule('ely', 'left: 84%; top: 27%;')}
+        ${renderCapsule('anicia', 'left: 84%; top: 36%;')}
+        ${renderCapsule('linda', 'left: 84%; top: 45%;')}
+        ${renderCapsule('tricing', 'left: 84%; top: 54%;')}
+        ${renderCapsule('corazon', 'left: 84%; top: 63%;')}
+        ${renderCapsule('rody', 'left: 84%; top: 72%;')}
+        ${renderCapsule('erming', 'left: 84%; top: 81%;')}
+        ${renderCapsule('juanito', 'left: 84%; top: 90%;')}
+      </div>
+    </section>
+
   </div>
 
-  <!-- Modal -->
+  <!-- Detail Modal with 4:6 Vertical Aspect Ratio Wrapper -->
   <div class="modal-overlay" id="detail-modal">
     <div class="modal-content">
-      <button class="close-btn">&times;</button>
+      <button class="close-btn" aria-label="Close dialog">&times;</button>
       <div id="modal-body-content"></div>
     </div>
   </div>
 `;
 
-// Intersection Observer for Theme Morphing
+// ========================================================
+// Theme Morphing on Scroll (Intersection Observer)
+// ========================================================
 const sections = document.querySelectorAll('.generation-section');
 const rootElement = document.documentElement;
 
 const observerOptions = {
   root: null,
-  rootMargin: '-50% 0px -50% 0px', // Trigger when section is in the middle of viewport
+  rootMargin: '-40% 0px -40% 0px',
   threshold: 0
 };
 
@@ -126,36 +390,60 @@ const observer = new IntersectionObserver((entries) => {
 
 sections.forEach(section => observer.observe(section));
 
-// Modal Logic
+// ========================================================
+// Scroll Indicator Click Handlers
+// ========================================================
+document.querySelectorAll<HTMLButtonElement>('.scroll-indicator').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetSelector = btn.getAttribute('data-target');
+    if (targetSelector) {
+      const targetElement = document.querySelector(targetSelector);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+});
+
+// ========================================================
+// Modal Logic (Detail & Methodology)
+// Clean vertical format: Framed portrait photo on top, Name centered below
+// ========================================================
 const modal = document.getElementById('detail-modal')!;
 const closeBtn = document.querySelector('.close-btn')!;
 const modalBodyContent = document.getElementById('modal-body-content')!;
-const cards = document.querySelectorAll('.family-card');
 
-cards.forEach(card => {
-  card.addEventListener('click', (e) => {
-    const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
+const setupClickableNode = (element: HTMLElement) => {
+  element.addEventListener('click', () => {
+    const id = element.getAttribute('data-id');
+    if (!id || id === 'siblings') return;
     const member = familyData.find(m => m.id === id);
 
     if (member) {
+      const initial = member.name.charAt(0).toUpperCase();
+      const hasPhoto = member.photoUrl && !member.photoUrl.startsWith('[PASTE');
+      const avatarHtml = hasPhoto
+        ? `<img src="${member.photoUrl}" alt="${member.name}" />`
+        : `<span>${initial}</span>`;
+
       modalBodyContent.innerHTML = `
-        <div class="avatar-container">
-          ${member.photoUrl && !member.photoUrl.startsWith('[PASTE')
-          ? `<img src="${member.photoUrl}" alt="${member.name}" style="width: 100%; height: 100%; object-fit: cover;" />`
-          : `<span>${member.name.charAt(0)}</span>`}
-        </div>
-        <div class="card-content">
-          <span class="relation-tag">${member.relation}</span>
-          <h3 class="serif">${member.name}</h3>
-          <p class="lifespan">${member.birthyear}</p>
-          <p class="bio">${member.shortBio}</p>
+        <div class="modal-vertical-layout">
+          <!-- Photo on top -->
+          <div class="modal-portrait-avatar">
+            ${avatarHtml}
+          </div>
+          <!-- Name centered cleanly below photo -->
+          <h3 class="serif modal-name">${member.name}</h3>
         </div>
       `;
 
       modal.classList.add('active');
     }
   });
-});
+};
+
+// Attach click listeners to all clickable cards & capsules
+document.querySelectorAll<HTMLElement>('.family-card:not(.card-unclickable), .family-capsule:not(.capsule-unclickable)').forEach(setupClickableNode);
 
 closeBtn.addEventListener('click', () => {
   modal.classList.remove('active');
@@ -187,12 +475,29 @@ modal.addEventListener('click', (e) => {
   }
 });
 
-// Track mouse for flashlight effect (accounting for scroll position)
-window.addEventListener('pointermove', (e) => {
-  const scrollTop = app.scrollTop;
-  document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-  document.documentElement.style.setProperty('--mouse-y', `${e.clientY + scrollTop}px`);
+// Escape key to close modal
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('active')) {
+    modal.classList.remove('active');
+  }
 });
 
-// Initialize falling leaves
+// ========================================================
+// Pointer & Scroll Tracking for Flashlight Effect
+// Centered dynamically on cursor without offset drift
+// ========================================================
+window.addEventListener('pointermove', (e) => {
+  document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+  document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+});
+
+const updateScrollOffset = () => {
+  const scrollY = app.scrollTop;
+  document.documentElement.style.setProperty('--app-scroll-y', `${scrollY}px`);
+};
+
+app.addEventListener('scroll', updateScrollOffset, { passive: true });
+updateScrollOffset();
+
+// Initialize falling leaves animation
 initLeaves();

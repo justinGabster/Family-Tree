@@ -4,97 +4,224 @@ export interface FamilyMember {
   relation: string;
   generation: 1 | 2 | 3 | 4;
   photoUrl: string;
-  birthyear: string;
-  shortBio: string;
+  shortBio?: string;
   notableMilestones?: string[];
 }
 
 export const familyData: FamilyMember[] = [
   // ==========================================
-  // GENERATION 1: AUTUMN (Current / Modern Era)
+  // GENERATION 1: The Children / Future
   // ==========================================
   {
-    id: 'gen1-1',
+    id: 'justin',
     name: 'Justin Gabriel A Jose',
-    relation: 'Me',
+    relation: 'ME',
     generation: 1,
     photoUrl: '/justin.jpg',
-    birthyear: '2006',
-    shortBio: 'Eldest son of Cristina A Jose and Jefrey A Jose, born on September 27, 2006. Currently a third-year student at the Polytechnic University of the Philippines.',
+    shortBio: 'Eldest son of Cristina and Jeffrey A Jose. Currently a third-year student at the Polytechnic University of the Philippines.'
   },
   {
-    id: 'gen1-2',
+    id: 'lance',
     name: 'Lance Jeffrey A Jose',
-    relation: 'Brother',
+    relation: 'BROTHER',
     generation: 1,
     photoUrl: '/lance.jpg',
-    birthyear: '2010',
-    shortBio: 'Second son of Cristina A Jose and Jefrey A Jose, born on April 7, 2010. Younger brother of Justin and currently a senior high school student.',
+    shortBio: 'Second son of Cristina and Jeffrey A Jose. Younger brother of Justin and currently a senior high school student.'
   },
 
   // ==========================================
-  // GENERATION 2: SUMMER (Parents / Maturation)
+  // GENERATION 2: Parents & Direct Aunts/Uncles
   // ==========================================
   {
-    id: 'gen2-1',
-    name: 'Maria Cristina A Jose',
+    id: 'cristina',
+    name: 'Cristina Dela Cruz',
     relation: 'Mother',
     generation: 2,
     photoUrl: '/cristina.jpg',
-    birthyear: '1979',
-    shortBio: 'The youngest child of Domingo and Flordeliza Dela Cruz. She is a devoted teacher, wife, and mother to Justin and Lance.',
+    shortBio: 'The youngest child of Domingo and Flordeliza Dela Cruz. A devoted teacher, wife, and mother to Justin and Lance.'
   },
   {
-    id: 'gen2-2',
+    id: 'jeffrey',
     name: 'Jeffrey A Jose',
     relation: 'Father',
     generation: 2,
     photoUrl: '/jefrey.jpg',
-    birthyear: '1979',
-    shortBio: 'The eldest child of Marcelino and Florida A Jose. He is a hardworking OFW, husband, and father to Justin and Lance.',
+    shortBio: 'The eldest child of Marcelino and Florida A Jose. A hardworking OFW, husband, and father to Justin and Lance.'
+  },
+  {
+    id: 'janice',
+    name: 'Janice A Jose',
+    relation: 'Aunt',
+    generation: 2,
+    photoUrl: '/janice.jpg',
+    shortBio: 'Daughter of Marcelino and Florida A Jose. Sister to Jeffrey, Jerome, and Jefferex.'
+  },
+  {
+    id: 'jerome',
+    name: 'Jerome A Jose',
+    relation: 'Uncle',
+    generation: 2,
+    photoUrl: '/jerome.jpg',
+    shortBio: 'Son of Marcelino and Florida A Jose. Brother to Jeffrey, Janice, and Jefferex.'
+  },
+  {
+    id: 'jefferex',
+    name: 'Jefferex A Jose',
+    relation: 'Uncle',
+    generation: 2,
+    photoUrl: '/jefferex.jpg',
+    shortBio: 'Son of Marcelino and Florida A Jose. Brother to Jeffrey, Janice, and Jerome.'
   },
 
   // ==========================================
-  // GENERATION 3: SPRING (Grandparents / Foundations)
+  // GENERATION 3: Grandparents & Siblings
   // ==========================================
   {
-    id: 'gen3-1',
+    id: 'flordeliza',
+    name: 'Flordeliza Paguia',
+    relation: 'Grandmother',
+    generation: 3,
+    photoUrl: '/flordeliza.jpg',
+    shortBio: 'A graceful homemaker and loving grandmother, remembered for her pristine home, warmth, and devotion to her family.'
+  },
+  {
+    id: 'domingo',
     name: 'Domingo Dela Cruz',
     relation: 'Grandfather',
     generation: 3,
     photoUrl: '/domingo.jpg',
-    birthyear: '1939',
-    shortBio: 'A retired policeman with a commanding voice and a soft spot for family. Everyone remembers how he’d yell "Gaboooo!" across the house whenever he had an errand ready for his grandso, Justin.',
+    shortBio: 'A retired policeman with a commanding voice and a soft spot for family. Grandfather to Justin and Lance.'
   },
   {
-    id: 'gen3-2',
-    name: 'Flordeliza Dela Cruz',
+    id: 'marcelino',
+    name: 'Marcelino A Jose',
+    relation: 'Grandfather',
+    generation: 3,
+    photoUrl: '/marcelino.jpg',
+    shortBio: 'Paternal grandfather, father of Jeffrey, Janice, Jerome, and Jefrex. Grounded the family with strength and guidance.'
+  },
+  {
+    id: 'florida',
+    name: 'Florida Calalang',
     relation: 'Grandmother',
     generation: 3,
-    photoUrl: '/flordeliza.jpg',
-    birthyear: '1942',
-    shortBio: 'A graceful homemaker and loving wife, once remembered as the most beautiful dalaga of her time. A devoted mother to seven, she kept a pristine, squeaky-clean home filled with warmth and heart.',
+    photoUrl: '/florida.jpg',
+    shortBio: 'Paternal grandmother, wife to Marcelino A Jose and cherished daughter in the Calalang lineage.'
+  },
+  {
+    id: 'filomena',
+    name: 'Filomena Calalang',
+    relation: 'Grand-Aunt',
+    generation: 3,
+    photoUrl: '/filomena.jpg',
+    shortBio: 'Beloved member of the Calalang family and sister to Florida Calalang.'
   },
 
   // ==========================================
-  // GENERATION 4: WINTER (Ancestors / Roots)
+  // GENERATION 4: Roots & Extended Ancestry
   // ==========================================
   {
-    id: 'gen4-1',
+    id: 'timoteo',
     name: 'Timoteo Dela Cruz',
     relation: 'Great-Grandfather',
     generation: 4,
-    photoUrl: '[PASTE GENERATION 4 PATRIARCH PHOTO URL]',
-    birthyear: '1914',
-    shortBio: 'A master furniture maker of his era, widely known across Santol as a respected craftsman. With patient hands and an eye for detail, he shaped sturdy heirlooms that stood the test of time, grounding his family with the same honesty and quiet dedication.',
+    photoUrl: '',
+    shortBio: 'A master furniture maker of his era, widely known across Santol as a respected craftsman of sturdy heirlooms and honest values.'
   },
   {
-    id: 'gen4-2',
+    id: 'maria',
     name: 'Maria Paguia',
     relation: 'Great-Grandmother',
     generation: 4,
-    photoUrl: '[PASTE GENERATION 4 MATRIARCH PHOTO URL]',
-    birthyear: '1910',
-    shortBio: 'The gentle matriarch whose kitchen and prayers anchored the whole household. Remembered for her soft-spoken wisdom, remarkable patience, and the warm, open door she kept for anyone needing a hot meal or comforting words.',
+    photoUrl: '',
+    shortBio: 'The gentle matriarch whose kitchen and prayers anchored the whole household with soft-spoken wisdom and patience.'
+  },
+  {
+    id: 'gloria',
+    name: 'Gloria Adornado',
+    relation: 'Great-Grandmother',
+    generation: 4,
+    photoUrl: '',
+    shortBio: 'Great-grandmother and matriarch of the extended Calalang lineage.'
+  },
+  {
+    id: 'siblings',
+    name: 'Siblings',
+    relation: 'Ancestral Lineage',
+    generation: 4,
+    photoUrl: '',
+    shortBio: 'The extended siblings and ancestral roots uniting the Calalang family lineage.'
+  },
+  {
+    id: 'pablo',
+    name: 'Pablo Calalang',
+    relation: 'Great-Grandfather',
+    generation: 4,
+    photoUrl: '/pablo.jpg',
+    shortBio: 'Patriarch of the Calalang lineage, father to the Calalang siblings.'
+  },
+  {
+    id: 'ely',
+    name: 'Ely Calalang',
+    relation: 'Great-Uncle',
+    generation: 4,
+    photoUrl: '/ely.jpg',
+    shortBio: 'Son of Pablo and Gloria, cherished member of the Calalang family.'
+  },
+  {
+    id: 'anicia',
+    name: 'Anicia Calalang',
+    relation: 'Great-Aunt',
+    generation: 4,
+    photoUrl: '/anicia.jpg',
+    shortBio: 'Daughter of Pablo and Gloria Calalang.'
+  },
+  {
+    id: 'linda',
+    name: 'Linda Calalang',
+    relation: 'Great-Aunt',
+    generation: 4,
+    photoUrl: '/linda.jpg',
+    shortBio: 'Daughter of Pablo and Gloria Calalang.'
+  },
+  {
+    id: 'tricing',
+    name: 'Tricing Calalang',
+    relation: 'Great-Aunt',
+    generation: 4,
+    photoUrl: '/tricing.jpg',
+    shortBio: 'Daughter of Pablo and Gloria Calalang.'
+  },
+  {
+    id: 'corazon',
+    name: 'Corazon Calalang',
+    relation: 'Great-Aunt',
+    generation: 4,
+    photoUrl: '/corazon.jpg',
+    shortBio: 'Daughter of Pablo and Gloria Calalang.'
+  },
+  {
+    id: 'rody',
+    name: 'Rody Calalang',
+    relation: 'Great-Uncle',
+    generation: 4,
+    photoUrl: '/rody.jpg',
+    shortBio: 'Son of Pablo and Gloria Calalang.'
+  },
+  {
+    id: 'erming',
+    name: 'Erming Calalang',
+    relation: 'Great-Uncle',
+    generation: 4,
+    photoUrl: '/erming.jpg',
+    shortBio: 'Son of Pablo and Gloria Calalang.'
+  },
+  {
+    id: 'juanito',
+    name: 'Juanito Calalang',
+    relation: 'Great-Uncle',
+    generation: 4,
+    photoUrl: '/juanito.jpg',
+    shortBio: 'Son of Pablo and Gloria Calalang.'
   }
 ];
