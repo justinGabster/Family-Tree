@@ -420,23 +420,24 @@ h4,
 }
 
 /* ========================================================
-   PANELS 2, 3, & 4: COMPACT VERTICAL RESTING CARDS
+   PANELS 2, 3, & 4: SCALED UP VERTICAL RESTING CARDS
    Photo on top, Name centered below, perfectly separated
+   SCALED UP 28% for better balance on 1920x1080 canvas
    ======================================================== */
 .vertical-card {
-  width: 140px;
-  height: 160px;
+  width: 180px;
+  height: 205px;
   border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem 0.5rem;
+  padding: 0.75rem 0.65rem;
 }
 
 .vertical-avatar {
-  width: 95px;
-  height: 110px;
+  width: 122px;
+  height: 141px;
   border-radius: 0.75rem;
   overflow: hidden;
   border: 2px solid var(--accent-color);
@@ -444,11 +445,11 @@ h4,
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   color: white;
   font-weight: 600;
   flex-shrink: 0;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.5rem;
 }
 
 .vertical-avatar img {
@@ -464,16 +465,16 @@ h4,
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 2.4rem;
+  min-height: 2.6rem;
 }
 
 .vertical-name {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-family: 'Playfair Display', serif;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.25;
   text-align: center;
   white-space: normal;
   word-break: keep-all;

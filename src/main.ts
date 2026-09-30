@@ -181,41 +181,45 @@ app.innerHTML = `
       <div class="panel-inner">
         <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">☀️</span>
+          <span class="season-icon">☀︝</span>
           <h2 class="serif">2nd Generation: The Parents & Trunks</h2>
         </div>
 
         <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, ZERO INTERSECTIONS) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Inflow from Gen 1 at x=500, splits down into top of Cristina & Jeffrey cards -->
-          <line x1="500" y1="0" x2="500" y2="100" />
-          <path d="M 240 100 L 680 100" />
-          <line x1="240" y1="100" x2="240" y2="170" />
-          <line x1="680" y1="100" x2="680" y2="170" />
+          <!-- Inflow from Gen 1 at x=500, splits horizontally then drops to card tops -->
+          <line x1="500" y1="0" x2="500" y2="80" />
+          <path d="M 240 80 L 680 80" />
+          
+          <!-- Left branch: drops to TOP of Cristina card (not through it) -->
+          <line x1="240" y1="80" x2="240" y2="145" />
+          
+          <!-- Right branch: drops to TOP of Jeffrey card (not through it) -->
+          <line x1="680" y1="80" x2="680" y2="145" />
 
-          <!-- Under Cristina: connects down to Child of Flordeliza and Domingo -->
-          <line x1="240" y1="330" x2="240" y2="560" />
+          <!-- Under Cristina: resumes from BOTTOM edge, connects down to Child pill -->
+          <line x1="240" y1="355" x2="240" y2="560" />
           <line x1="240" y1="600" x2="240" y2="750" />
           <line x1="240" y1="750" x2="180" y2="750" />
           <line x1="180" y1="750" x2="180" y2="1000" />
 
-          <!-- Under Jeffrey: connects to Children of Florinda and Marcelino -->
-          <line x1="680" y1="330" x2="680" y2="420" />
-          <line x1="680" y1="420" x2="540" y2="420" />
-          <line x1="540" y1="420" x2="540" y2="480" />
+          <!-- Under Jeffrey: resumes from BOTTOM edge to Children pill -->
+          <line x1="680" y1="355" x2="680" y2="405" />
+          <line x1="680" y1="405" x2="560" y2="405" />
+          <line x1="560" y1="405" x2="560" y2="480" />
 
-          <!-- Children of Florinda and Marcelino splits right into Janice, Jerome, Jefferex -->
-          <line x1="640" y1="500" x2="760" y2="500" />
+          <!-- Children of Florinda pill splits right with MORE SPACING from trunk -->
+          <line x1="660" y1="500" x2="760" y2="500" />
           <line x1="760" y1="250" x2="760" y2="750" />
           <line x1="760" y1="250" x2="810" y2="250" />
           <line x1="760" y1="500" x2="810" y2="500" />
           <line x1="760" y1="750" x2="810" y2="750" />
 
           <!-- Downwards branches into Generation 3 (Marcelino & Florida) -->
-          <line x1="540" y1="520" x2="540" y2="800" />
-          <line x1="540" y1="800" x2="500" y2="800" />
+          <line x1="560" y1="520" x2="560" y2="800" />
+          <line x1="560" y1="800" x2="500" y2="800" />
           <line x1="500" y1="800" x2="500" y2="1000" />
-          <line x1="540" y1="800" x2="760" y2="800" />
+          <line x1="560" y1="800" x2="760" y2="800" />
           <line x1="760" y1="800" x2="760" y2="1000" />
         </svg>
 
@@ -228,9 +232,9 @@ app.innerHTML = `
         ${renderVerticalCard('jerome', 'left: 86%; top: 50%;')}
         ${renderVerticalCard('jefferex', 'left: 86%; top: 75%;')}
 
-        <!-- Single-Line Connector Pill Badges -->
+        <!-- Single-Line Connector Pill Badges with MORE SPACING from trunk -->
         <div class="connector-pill" style="left: 24%; top: 58%;">Child of Flordeliza and Domingo</div>
-        <div class="connector-pill" style="left: 54%; top: 50%;">Children of Florinda and Marcelino</div>
+        <div class="connector-pill" style="left: 58%; top: 50%;">Children of Florinda and Marcelino</div>
       </div>
 
       <!-- Bouncing Scroll Down Indicator -->
@@ -247,28 +251,31 @@ app.innerHTML = `
       <div class="panel-inner">
         <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">🍁</span>
+          <span class="season-icon">🝝</span>
           <h2 class="serif">3rd Generation: The Grandparents & Foundations</h2>
         </div>
 
-        <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, CLEAN DROP) -->
+        <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, CLEAN BREAK AT CARD EDGES) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Left branch: Enters at x=180, drops straight into Flordeliza, then into Domingo, then into Pill -->
-          <line x1="180" y1="0" x2="180" y2="200" />
-          <line x1="180" y1="360" x2="180" y2="480" />
-          <line x1="180" y1="640" x2="180" y2="760" />
+          <!-- Left branch: Enters at x=180, drops to TOP of Flordeliza -->
+          <line x1="180" y1="0" x2="180" y2="175" />
+          <!-- Resumes from BOTTOM of Flordeliza to TOP of Domingo -->
+          <line x1="180" y1="385" x2="180" y2="455" />
+          <!-- Resumes from BOTTOM of Domingo to pill -->
+          <line x1="180" y1="665" x2="180" y2="760" />
           <line x1="180" y1="800" x2="180" y2="1000" />
 
-          <!-- Center: Enters at x=500, drops into Marcelino, then into Pill, then down to Gen 4 -->
-          <line x1="500" y1="0" x2="500" y2="270" />
-          <line x1="500" y1="430" x2="500" y2="560" />
+          <!-- Center: Enters at x=500, drops to TOP of Marcelino, then to pill, then Gen 4 -->
+          <line x1="500" y1="0" x2="500" y2="245" />
+          <line x1="500" y1="455" x2="500" y2="560" />
           <line x1="500" y1="600" x2="500" y2="1000" />
 
-          <!-- Right branch: Enters at x=760, connects into Florida, then into Filomena -->
-          <line x1="760" y1="0" x2="760" y2="100" />
-          <line x1="760" y1="100" x2="780" y2="100" />
-          <line x1="780" y1="100" x2="780" y2="200" />
-          <line x1="780" y1="360" x2="780" y2="480" />
+          <!-- Right branch: Enters at x=760, routes right to x=780 then drops to TOP of Florida -->
+          <line x1="760" y1="0" x2="760" y2="80" />
+          <line x1="760" y1="80" x2="780" y2="80" />
+          <line x1="780" y1="80" x2="780" y2="175" />
+          <!-- Resumes from BOTTOM of Florida to TOP of Filomena -->
+          <line x1="780" y1="385" x2="780" y2="455" />
         </svg>
 
         <!-- Generation 3 Distinct Vertical Cards (Completely Separated) -->
@@ -297,22 +304,24 @@ app.innerHTML = `
       <div class="panel-inner">
         <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">❄️</span>
+          <span class="season-icon">❄︝</span>
           <h2 class="serif">4th Generation: The Great Grandparents & Roots</h2>
         </div>
 
-        <!-- Clean Solid Orthogonal Connector Lines (ZERO STRAY LINES) -->
+        <!-- Clean Solid Orthogonal Connector Lines (BREAK AT CARD BOUNDARIES) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Left branch: Inflow enters at x=180 directly from Child of Timoteo and Maria -->
-          <!-- Drops straight into Timoteo, then continues straight into Maria. NO STRAY LINES! -->
-          <line x1="180" y1="0" x2="180" y2="200" />
-          <line x1="180" y1="360" x2="180" y2="600" />
+          <!-- Left branch: Inflow enters at x=180, drops to TOP of Timoteo -->
+          <line x1="180" y1="0" x2="180" y2="175" />
+          <!-- Resumes from BOTTOM of Timoteo to TOP of Maria -->
+          <line x1="180" y1="385" x2="180" y2="575" />
 
-          <!-- Center: Inflow from Marcelino at x=500 into Gloria, then down to Siblings capsule -->
-          <line x1="500" y1="0" x2="500" y2="200" />
-          <line x1="500" y1="360" x2="500" y2="560" />
+          <!-- Center: Inflow from Marcelino at x=500 drops to TOP of Gloria -->
+          <line x1="500" y1="0" x2="500" y2="175" />
+          <!-- Resumes from BOTTOM of Gloria down to Siblings capsule -->
+          <line x1="500" y1="385" x2="500" y2="560" />
 
-          <!-- From right side of Siblings capsule into Calalang vertical bracket spine -->
+          <!-- From RIGHT edge of Siblings capsule to Calalang vertical bracket spine -->
+          <!-- ALIGNED TO CENTER of bracket for clean right-angle intersection -->
           <line x1="570" y1="580" x2="670" y2="580" />
           <line x1="670" y1="180" x2="670" y2="900" />
 
