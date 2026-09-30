@@ -5,7 +5,7 @@ export function initLeaves() {
   bgCanvas.style.position = 'fixed';
   bgCanvas.style.inset = '0';
   bgCanvas.style.pointerEvents = 'none';
-  bgCanvas.style.zIndex = '-1';
+  bgCanvas.style.zIndex = '1';
   document.body.appendChild(bgCanvas);
 
   // Foreground canvas (In front of the tree, behind the cards)
@@ -14,7 +14,7 @@ export function initLeaves() {
   fgCanvas.style.position = 'fixed';
   fgCanvas.style.inset = '0';
   fgCanvas.style.pointerEvents = 'none';
-  fgCanvas.style.zIndex = '0';
+  fgCanvas.style.zIndex = '3';
   document.body.appendChild(fgCanvas);
 
   const bgCtx = bgCanvas.getContext('2d')!;

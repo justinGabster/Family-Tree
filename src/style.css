@@ -1,17 +1,77 @@
 :root {
   /* Mouse tracking for flashlight effect */
-  --mouse-x: -500px;
-  --mouse-y: -500px;
+  --mouse-x: -999px;
+  --mouse-y: -999px;
+  --app-scroll-y: 0px;
   
   /* Transition timings */
   --transition-slow: 0.8s ease-in-out;
   --transition-med: 0.4s ease;
+
+  /* Default theme (Spring - Gen 1) */
+  --bg-color: #606c38;
+  --bg-gradient: linear-gradient(135deg, #606c38 0%, #4c562c 100%);
+  --text-primary: #283618;
+  --text-secondary: #606c38;
+  --accent-color: #bc6c25;
+  --tree-color: #cbd5e1;
+  --card-bg: rgba(254, 250, 224, 0.92);
+  --card-border: rgba(255, 255, 255, 0.85);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Seasonal Themes (Preserved project color palettes) */
+
+/* Spring - Gen 1 */
+[data-theme="spring"] {
+  --bg-color: #606c38;
+  --bg-gradient: linear-gradient(135deg, #606c38 0%, #4c562c 100%);
+  --text-primary: #283618;
+  --text-secondary: #4a542a;
+  --accent-color: #bc6c25;
+  --tree-color: #606c38;
+  --card-bg: rgba(254, 250, 224, 0.92);
+  --card-border: rgba(254, 250, 224, 1);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Summer - Gen 2 */
+[data-theme="summer"] {
+  --bg-color: #bc6c25;
+  --bg-gradient: linear-gradient(135deg, #bc6c25 0%, #96561d 100%);
+  --text-primary: #283618;
+  --text-secondary: #606c38;
+  --accent-color: #dda15e;
+  --tree-color: #bc6c25;
+  --card-bg: rgba(254, 250, 224, 0.92);
+  --card-border: rgba(254, 250, 224, 1);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Autumn - Gen 3 */
+[data-theme="autumn"] {
+  --bg-color: #dda15e;
+  --bg-gradient: linear-gradient(135deg, #dda15e 0%, #b0814b 100%);
+  --text-primary: #283618;
+  --text-secondary: #606c38;
+  --accent-color: #bc6c25;
+  --tree-color: #dda15e;
+  --card-bg: rgba(254, 250, 224, 0.92);
+  --card-border: rgba(254, 250, 224, 1);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Winter - Gen 4 */
+[data-theme="winter"] {
+  --bg-color: #283618;
+  --bg-gradient: linear-gradient(135deg, #283618 0%, #1e2812 100%);
+  --text-primary: #283618;
+  --text-secondary: #606c38;
+  --accent-color: #bc6c25;
+  --tree-color: #283618;
+  --card-bg: rgba(254, 250, 224, 0.92);
+  --card-border: rgba(254, 250, 224, 1);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 html,
@@ -20,12 +80,18 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
-  font-size: 90%;
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  color: #1e293b;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  transition: background-color var(--transition-slow);
 }
 
 h1,
@@ -36,89 +102,472 @@ h4,
   font-family: 'Playfair Display', serif;
 }
 
+/* The global scroll track containing all 4 generation sections */
 #app {
   position: relative;
   width: 100%;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  z-index: 4;
 }
 
-/* Tree background with flashlight effect */
+/* ========================================================
+   TREE BACKGROUND & ZERO-DRIFT CURSOR FLASHLIGHT
+   Fixed full viewport container ensuring 1:1 mouse tracking
+   ======================================================== */
 .tree-bg-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
-  z-index: 1;
-}
-
-.tree-silhouette {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 800px;
-  height: 100%;
-  background-image: url('/tree-bg.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  opacity: 0.8;
-  filter: brightness(0.3);
-  -webkit-mask-image: radial-gradient(
-    circle 300px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-    rgba(0,0,0,0.3) 0%, 
-    rgba(0,0,0,0.6) 30%, 
-    rgba(0,0,0,1) 60%
-  );
-  mask-image: radial-gradient(
-    circle 300px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-    rgba(0,0,0,0.3) 0%, 
-    rgba(0,0,0,0.6) 30%, 
-    rgba(0,0,0,1) 60%
-  );
-}
-
-/* Main tree wrapper */
-.tree-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
   z-index: 2;
 }
 
-/* Four colored background panels */
-.panel {
+/* Shared styling for both tree layers */
+.tree-base-layer,
+.tree-color-layer {
   position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center calc(-1 * var(--app-scroll-y, 0px));
+  background-size: min(100vw, 1300px) auto;
+  pointer-events: none;
+}
+
+/* Darker Base Silhouette Image with applied CSS filters */
+.tree-base-layer {
+  background-image: url('/tree-bg.png');
+  filter: brightness(0.65) contrast(1.15);
+  opacity: 0.35;
+}
+
+/* Flashlight Revealed Color Layer: Zero offset drift */
+.tree-color-layer {
+  background-image: url('/colored tree.png');
+  opacity: 1;
+  -webkit-mask-image: radial-gradient(circle 250px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 20%, transparent 80%);
+  mask-image: radial-gradient(circle 250px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 20%, transparent 80%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* Side vignette gradient */
+#app::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.15) 0%,
+    transparent 15%,
+    transparent 85%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Generational Tree Layout Container */
+.tree-container {
+  position: relative;
   width: 100%;
-  height: 25%;
-  left: 0;
+  margin: 0 auto;
 }
 
-.panel-1 {
-  top: 0;
-  background: linear-gradient(180deg, #52b788 0%, #40916c 100%);
+/* ========================================================
+   GENERATION SECTION PANELS (1920×1080 OPTIMIZED)
+   ======================================================== */
+.generation-section {
+  position: relative;
+  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  z-index: 4;
 }
 
-.panel-2 {
-  top: 25%;
-  background: linear-gradient(180deg, #f4a261 0%, #e76f51 100%);
+/* Panel inner bounds matching 1920×1080 coordinate space */
+.panel-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
 }
 
-.panel-3 {
-  top: 50%;
-  background: linear-gradient(180deg, #e9c46a 0%, #f4a261 100%);
+/* ========================================================
+   RIGHT-ALIGNED GENERATION TITLE HEADER
+   Mirrors exact top & right margin (1.5rem) of Methodology button
+   ======================================================== */
+.generation-header {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 25;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.7rem 1.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  pointer-events: none;
+  user-select: none;
+  transition: all var(--transition-med);
 }
 
-.panel-4 {
-  top: 75%;
-  background: linear-gradient(180deg, #2d6a4f 0%, #1b4332 100%);
+.generation-header h2 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin: 0;
 }
 
-/* SVG connector lines */
+.season-icon {
+  font-size: 1.2rem;
+}
+
+/* ========================================================
+   PERSISTENT METHODOLOGY BUTTON (TOP-LEFT CORNER)
+   ======================================================== */
+.methodology-btn {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.7rem 1.4rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-med);
+}
+
+.methodology-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-color);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+.methodology-btn:active {
+  transform: translateY(0);
+}
+
+.methodology-btn-icon {
+  font-size: 1.15rem;
+}
+
+.methodology-btn-text {
+  letter-spacing: 0.02em;
+}
+
+/* ========================================================
+   SCROLL INDICATOR (BOUNCING ARROW) - PANELS 1, 2, 3
+   ======================================================== */
+.scroll-indicator {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: bounce 2s infinite ease-in-out;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  padding: 0;
+}
+
+.scroll-indicator:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: #ffffff;
+  transform: translateX(-50%) scale(1.1);
+}
+
+.scroll-indicator svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-8px);
+  }
+}
+
+/* ========================================================
+   BASE FAMILY CARD (GLASSMORPHISM & POSITIONING)
+   ======================================================== */
+.family-card {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease, border-color 0.35s ease;
+  z-index: 10;
+  box-sizing: border-box;
+  user-select: none;
+  overflow: visible !important;
+}
+
+.family-card:hover {
+  transform: translate(-50%, -50%) scale(1.03) translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+  border-color: var(--accent-color);
+  z-index: 18;
+}
+
+/* ========================================================
+   PANEL 1: LARGE HORIZONTAL CARDS (JUSTIN & LANCE)
+   Photo on left, Name on right on a natural single line
+   ======================================================== */
+.horizontal-card {
+  width: 440px;
+  height: 175px;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  padding: 1.15rem 1.5rem;
+  gap: 1.35rem;
+}
+
+.horizontal-avatar {
+  width: 120px;
+  height: 145px;
+  border-radius: 0.85rem;
+  overflow: hidden;
+  border: 2.5px solid var(--accent-color);
+  background: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.horizontal-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.horizontal-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.horizontal-name {
+  font-size: 1.45rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+/* ========================================================
+   PANELS 2, 3, & 4: COMPACT VERTICAL RESTING CARDS
+   Photo on top, Name centered below, perfectly separated
+   ======================================================== */
+.vertical-card {
+  width: 140px;
+  height: 160px;
+  border-radius: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.5rem;
+}
+
+.vertical-avatar {
+  width: 95px;
+  height: 110px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 2px solid var(--accent-color);
+  background: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: white;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-bottom: 0.45rem;
+}
+
+.vertical-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vertical-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 2.4rem;
+}
+
+.vertical-name {
+  font-size: 0.95rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+/* ========================================================
+   SIBLINGS CAPSULE (PANEL 4)
+   Clean standard pill capsule size
+   ======================================================== */
+.siblings-capsule {
+  width: 130px;
+  height: 40px;
+  border-radius: 9999px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: 'Playfair Display', serif;
+  color: #1e293b;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ========================================================
+   CALALANG EXTENDED SIBLINGS COMPACT CAPSULES (PANEL 4 ONLY)
+   ======================================================== */
+.family-capsule {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 200px;
+  height: 44px;
+  background: rgba(254, 250, 224, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 9999px;
+  padding: 0.25rem 0.85rem 0.25rem 0.4rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.family-capsule:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  border-color: var(--accent-color);
+  z-index: 18;
+}
+
+.capsule-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+}
+
+.capsule-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.capsule-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========================================================
+   CLEAN SOLID ORTHOGONAL CONNECTOR LINES (NO ARROWS)
+   ======================================================== */
 .connector-svg {
   position: absolute;
   top: 0;
@@ -126,156 +575,66 @@ h4,
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 3;
+  z-index: 5;
 }
 
-.trunk-line,
-.branch-line {
-  stroke: rgba(255, 255, 255, 0.3);
-  stroke-width: 3;
+.connector-svg path,
+.connector-svg line {
+  stroke: rgba(240, 245, 250, 0.88);
+  stroke-width: 2.5px;
   fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
 }
 
-/* Capsules - rounded pill shapes */
-.capsule {
+/* ========================================================
+   SINGLE-LINE CONNECTOR PILL BADGES
+   Strictly single line (white-space: nowrap, width: max-content)
+   ======================================================== */
+.connector-pill {
   position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 50px;
-  padding: 12px 24px;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+  background: rgba(254, 250, 224, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 9999px;
+  padding: 0.45rem 1.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  white-space: nowrap !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 5;
-  white-space: nowrap;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-}
-
-.capsule:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  border-color: rgba(255, 255, 255, 0.9);
-}
-
-.capsule-large {
-  padding: 14px 32px;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.capsule-small {
-  padding: 8px 18px;
-  font-size: 0.85rem;
-}
-
-.capsule-siblings {
-  background: rgba(200, 200, 200, 0.9);
-  cursor: default;
+  width: max-content;
   pointer-events: none;
+  letter-spacing: 0.015em;
+  font-family: 'Inter', sans-serif;
+  user-select: none;
 }
 
-.capsule-siblings:hover {
-  transform: none;
-}
-
-.capsule-name {
-  color: #1e293b;
-  font-weight: 500;
-  font-size: 0.95rem;
-  letter-spacing: 0.01em;
-}
-
-.capsule-large .capsule-name {
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-.capsule-small .capsule-name {
-  font-size: 0.8rem;
-}
-
-/* Siblings column layout */
-.siblings-column {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 5;
-}
-
-/* Connector labels */
-.connector-label {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 20px;
-  padding: 6px 16px;
-  font-size: 0.75rem;
-  color: #1e293b;
-  text-align: center;
-  white-space: nowrap;
-  z-index: 4;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-}
-
-/* Generation headers */
-.gen-header {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1e293b;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-  white-space: nowrap;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-/* Methodology button */
-.methodology-btn {
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  padding: 10px 20px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #1e293b;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.methodology-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Modal */
+/* ========================================================
+   DETAIL & METHODOLOGY MODAL
+   4:6 Vertical Aspect Ratio Wrapper (Photo top, Name bottom)
+   ======================================================== */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-med);
 }
 
 .modal-overlay.active {
@@ -283,141 +642,180 @@ h4,
   pointer-events: all;
 }
 
+/* 4:6 Vertical Aspect Ratio Wrapper */
 .modal-content {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 20px;
-  max-width: 500px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  padding: 2.2rem 2rem;
+  border-radius: 1.5rem;
   width: 90%;
-  max-height: 80vh;
+  max-width: 360px;
+  aspect-ratio: 4 / 6;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  transform: scale(0.9);
-  transition: transform 0.3s ease;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .modal-overlay.active .modal-content {
   transform: scale(1);
 }
 
+/* Methodology Modal override (auto aspect-ratio for comfortable reading) */
+.modal-content:has(.methodology-modal-content) {
+  aspect-ratio: auto;
+  max-width: 620px;
+  display: block;
+  text-align: left;
+  justify-content: flex-start;
+}
+
 .close-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.2rem;
+  right: 1.2rem;
   background: transparent;
   border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  color: #64748b;
+  font-size: 1.6rem;
   line-height: 1;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
+  cursor: pointer;
+  color: var(--text-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  z-index: 10;
 }
 
 .close-btn:hover {
-  color: #1e293b;
+  background: rgba(0, 0, 0, 0.08);
 }
 
-.modal-inner {
+/* Strict Vertical Modal Layout */
+.modal-vertical-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  width: 100%;
 }
 
-.modal-avatar {
+/* Photo on top: Framed portrait image */
+.modal-portrait-avatar {
   width: 180px;
-  height: 270px;
-  margin: 0 auto 1.5rem;
-  border-radius: 12px;
+  height: 240px;
+  border-radius: 1rem;
   overflow: hidden;
-  border: 3px solid #e2e8f0;
+  border: 3px solid var(--accent-color);
+  background: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  flex-shrink: 0;
 }
 
-.modal-avatar img {
+.modal-portrait-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
+/* Name centered cleanly beneath photo */
 .modal-name {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-  color: #1e293b;
+  font-size: 1.6rem;
+  margin: 0;
+  color: var(--text-primary);
+  text-align: center;
 }
 
-.modal-relation {
-  display: inline-block;
-  background: #3b82f6;
-  color: white;
-  padding: 4px 14px;
-  border-radius: 16px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-
-.modal-birthyear {
-  font-family: monospace;
-  color: #64748b;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-}
-
-.modal-bio {
+/* Methodology Modal Specifics */
+.methodology-modal-content {
+  color: var(--text-primary);
   text-align: left;
-  line-height: 1.7;
-  color: #475569;
-  font-size: 1rem;
 }
 
-.modal-subtitle {
-  font-style: italic;
-  color: #64748b;
+.methodology-header {
   margin-bottom: 1.5rem;
+}
+
+.methodology-header h2 {
+  font-size: 2rem;
+  margin: 0.4rem 0 0.3rem 0;
+  color: var(--text-primary);
+}
+
+.methodology-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 0;
 }
 
 .methodology-body {
-  text-align: left;
+  font-size: 1.05rem;
   line-height: 1.8;
-  color: #475569;
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .methodology-body p {
   margin: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .capsule {
-    padding: 8px 16px;
-    font-size: 0.8rem;
+/* ========================================================
+   RESPONSIVE DESIGN ADAPTATIONS
+   ======================================================== */
+@media (max-width: 1024px) {
+  .horizontal-card {
+    width: 360px;
+    height: 155px;
+    gap: 1rem;
+    padding: 1rem;
   }
-  
-  .capsule-large {
-    padding: 10px 20px;
-    font-size: 0.9rem;
+  .horizontal-avatar {
+    width: 100px;
+    height: 125px;
   }
-  
-  .capsule-small {
-    padding: 6px 12px;
-    font-size: 0.75rem;
+  .horizontal-name {
+    font-size: 1.25rem;
   }
-  
-  .gen-header {
-    font-size: 0.75rem;
-    padding: 8px 14px;
+  .vertical-card {
+    width: 125px;
+    height: 145px;
+    padding: 0.5rem;
   }
-  
-  .connector-label {
-    font-size: 0.65rem;
-    padding: 4px 10px;
+  .vertical-avatar {
+    width: 80px;
+    height: 95px;
+  }
+  .vertical-name {
+    font-size: 0.85rem;
+  }
+  .family-capsule {
+    width: 175px;
+    height: 38px;
+  }
+  .generation-header {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.55rem 1.2rem;
+  }
+  .generation-header h2 {
+    font-size: 1.05rem;
   }
 }
