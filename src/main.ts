@@ -210,10 +210,10 @@ app.innerHTML = `
 
           <!-- Children of Florinda pill splits right with MORE SPACING from trunk -->
           <line x1="660" y1="500" x2="760" y2="500" />
-          <line x1="760" y1="250" x2="760" y2="750" />
-          <line x1="760" y1="250" x2="810" y2="250" />
-          <line x1="760" y1="500" x2="810" y2="500" />
-          <line x1="760" y1="750" x2="810" y2="750" />
+          <line x1="760" y1="180" x2="760" y2="680" />
+          <line x1="760" y1="180" x2="810" y2="180" />
+          <line x1="760" y1="430" x2="810" y2="430" />
+          <line x1="760" y1="680" x2="810" y2="680" />
 
           <!-- Downwards branches into Generation 3 (Marcelino & Florida) -->
           <line x1="560" y1="520" x2="560" y2="800" />
@@ -227,10 +227,10 @@ app.innerHTML = `
         ${renderVerticalCard('cristina', 'left: 24%; top: 25%;')}
         ${renderVerticalCard('jeffrey', 'left: 68%; top: 25%;')}
 
-        <!-- Sibling vertical cards stacked on right with generous spacing -->
-        ${renderVerticalCard('janice', 'left: 86%; top: 25%;')}
-        ${renderVerticalCard('jerome', 'left: 86%; top: 50%;')}
-        ${renderVerticalCard('jefferex', 'left: 86%; top: 75%;')}
+        <!-- Sibling vertical cards stacked on right with NO OVERLAP -->
+        ${renderVerticalCard('janice', 'left: 86%; top: 18%;')}
+        ${renderVerticalCard('jerome', 'left: 86%; top: 43%;')}
+        ${renderVerticalCard('jefferex', 'left: 86%; top: 68%;')}
 
         <!-- Single-Line Connector Pill Badges with MORE SPACING from trunk -->
         <div class="connector-pill" style="left: 24%; top: 58%;">Child of Flordeliza and Domingo</div>
@@ -255,7 +255,7 @@ app.innerHTML = `
           <h2 class="serif">3rd Generation: The Grandparents & Foundations</h2>
         </div>
 
-        <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, CLEAN BREAK AT CARD EDGES) -->
+        <!-- Clean Solid Orthogonal Connector Lines (Florida & Filomena connect to Pablo) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
           <!-- Left branch: Enters at x=180, drops to TOP of Flordeliza -->
           <line x1="180" y1="0" x2="180" y2="175" />
@@ -268,14 +268,18 @@ app.innerHTML = `
           <!-- Center: Enters at x=500, drops to TOP of Marcelino, then to pill, then Gen 4 -->
           <line x1="500" y1="0" x2="500" y2="245" />
           <line x1="500" y1="455" x2="500" y2="560" />
-          <line x1="500" y1="600" x2="500" y2="1000" />
-
-          <!-- Right branch: Enters at x=760, routes right to x=780 then drops to TOP of Florida -->
-          <line x1="760" y1="0" x2="760" y2="80" />
-          <line x1="760" y1="80" x2="780" y2="80" />
-          <line x1="780" y1="80" x2="780" y2="175" />
+          <line x1="500" y1="600" x2="500" y2="800" />
+          
+          <!-- Branch from center to Pablo line at x=780 -->
+          <line x1="500" y1="800" x2="780" y2="800" />
+          <line x1="500" y1="800" x2="500" y2="1000" />
+          
+          <!-- Right branch: Pablo line drops to Florida and Filomena -->
+          <line x1="780" y1="800" x2="780" y2="175" />
           <!-- Resumes from BOTTOM of Florida to TOP of Filomena -->
           <line x1="780" y1="385" x2="780" y2="455" />
+          <!-- Continue down from Filomena to Gen 4 -->
+          <line x1="780" y1="665" x2="780" y2="1000" />
         </svg>
 
         <!-- Generation 3 Distinct Vertical Cards (Completely Separated) -->
@@ -308,24 +312,25 @@ app.innerHTML = `
           <h2 class="serif">4th Generation: The Great Grandparents & Roots</h2>
         </div>
 
-        <!-- Clean Solid Orthogonal Connector Lines (BREAK AT CARD BOUNDARIES) -->
+        <!-- Clean Solid Orthogonal Connector Lines (Pablo & Gloria as parents) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
           <!-- Left branch: Inflow enters at x=180, drops to TOP of Timoteo -->
           <line x1="180" y1="0" x2="180" y2="175" />
           <!-- Resumes from BOTTOM of Timoteo to TOP of Maria -->
           <line x1="180" y1="385" x2="180" y2="575" />
 
-          <!-- Center: Inflow from Marcelino at x=500 drops to TOP of Gloria -->
-          <line x1="500" y1="0" x2="500" y2="175" />
+          <!-- Right branch: Inflow from x=780 drops to TOP of Pablo -->
+          <line x1="780" y1="0" x2="780" y2="175" />
+          <!-- Resumes from BOTTOM of Pablo to TOP of Gloria -->
+          <line x1="780" y1="385" x2="780" y2="575" />
           <!-- Resumes from BOTTOM of Gloria down to Siblings capsule -->
-          <line x1="500" y1="385" x2="500" y2="560" />
+          <line x1="780" y1="785" x2="780" y2="860" />
 
-          <!-- From RIGHT edge of Siblings capsule to Calalang vertical bracket spine -->
-          <!-- ALIGNED TO CENTER of bracket for clean right-angle intersection -->
-          <line x1="570" y1="580" x2="670" y2="580" />
-          <line x1="670" y1="180" x2="670" y2="900" />
+          <!-- From Siblings capsule to Calalang vertical bracket spine -->
+          <line x1="720" y1="880" x2="670" y2="880" />
+          <line x1="670" y1="180" x2="670" y2="880" />
 
-          <!-- 9 Horizontal branches connecting into Calalang capsules -->
+          <!-- 8 Horizontal branches connecting to remaining Calalang capsules (not Pablo) -->
           <line x1="670" y1="180" x2="740" y2="180" />
           <line x1="670" y1="270" x2="740" y2="270" />
           <line x1="670" y1="360" x2="740" y2="360" />
@@ -334,32 +339,30 @@ app.innerHTML = `
           <line x1="670" y1="630" x2="740" y2="630" />
           <line x1="670" y1="720" x2="740" y2="720" />
           <line x1="670" y1="810" x2="740" y2="810" />
-          <line x1="670" y1="900" x2="740" y2="900" />
         </svg>
 
         <!-- Generation 4 Distinct Vertical Cards -->
         ${renderVerticalCard('timoteo', 'left: 18%; top: 28%;')}
         ${renderVerticalCard('maria', 'left: 18%; top: 68%;')}
 
-        <!-- Center: Gloria Adornado (distinct vertical card) -->
-        ${renderVerticalCard('gloria', 'left: 50%; top: 28%;')}
+        <!-- Right side: Pablo & Gloria as parents -->
+        ${renderVerticalCard('pablo', 'left: 78%; top: 28%;')}
+        ${renderVerticalCard('gloria', 'left: 78%; top: 68%;')}
         
-        <!-- Center: Siblings (Restored to clean, standard capsule size) -->
-        <div class="connector-pill siblings-capsule" style="left: 50%; top: 58%;" aria-label="Siblings">
+        <!-- Siblings capsule below Gloria -->
+        <div class="connector-pill siblings-capsule" style="left: 78%; top: 88%;" aria-label="Siblings">
           Siblings
         </div>
 
-        <!-- Right Side: 9 Calalang Siblings Stacked Vertically as Compact Capsules -->
-        <!-- Shifted downward starting at top: 18% so top-right header has ample clearance -->
-        ${renderCapsule('pablo', 'left: 84%; top: 18%;')}
-        ${renderCapsule('ely', 'left: 84%; top: 27%;')}
-        ${renderCapsule('anicia', 'left: 84%; top: 36%;')}
-        ${renderCapsule('linda', 'left: 84%; top: 45%;')}
-        ${renderCapsule('tricing', 'left: 84%; top: 54%;')}
-        ${renderCapsule('corazon', 'left: 84%; top: 63%;')}
-        ${renderCapsule('rody', 'left: 84%; top: 72%;')}
-        ${renderCapsule('erming', 'left: 84%; top: 81%;')}
-        ${renderCapsule('juanito', 'left: 84%; top: 90%;')}
+        <!-- Right Side: 8 Calalang Siblings (Pablo's siblings, not including him) -->
+        ${renderCapsule('ely', 'left: 94%; top: 18%;')}
+        ${renderCapsule('anicia', 'left: 94%; top: 27%;')}
+        ${renderCapsule('linda', 'left: 94%; top: 36%;')}
+        ${renderCapsule('tricing', 'left: 94%; top: 45%;')}
+        ${renderCapsule('corazon', 'left: 94%; top: 54%;')}
+        ${renderCapsule('rody', 'left: 94%; top: 63%;')}
+        ${renderCapsule('erming', 'left: 94%; top: 72%;')}
+        ${renderCapsule('juanito', 'left: 94%; top: 81%;')}
       </div>
     </section>
 
