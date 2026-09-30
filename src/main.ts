@@ -66,6 +66,17 @@ const renderVerticalCard = (
     ? `<img src="${member.photoUrl}" alt="${displayName}" onerror="this.parentElement.innerHTML='${initial}'" />`
     : `<span>${initial}</span>`;
 
+  // Dynamic font size based on name length
+  const nameLength = displayName.length;
+  let fontSize = '0.95rem';
+  if (nameLength > 18) {
+    fontSize = '0.75rem';
+  } else if (nameLength > 14) {
+    fontSize = '0.82rem';
+  } else if (nameLength > 10) {
+    fontSize = '0.88rem';
+  }
+
   return `
     <div 
       class="family-card vertical-card ${extraClasses}" 
@@ -77,7 +88,7 @@ const renderVerticalCard = (
         ${avatarHtml}
       </div>
       <div class="card-content vertical-content">
-        <h3 class="serif card-name vertical-name">${displayName}</h3>
+        <h3 class="serif card-name vertical-name" style="font-size: ${fontSize};">${displayName}</h3>
       </div>
     </div>
   `;
@@ -210,10 +221,10 @@ app.innerHTML = `
 
           <!-- Children of Florinda pill splits right with MORE SPACING from trunk -->
           <line x1="660" y1="500" x2="760" y2="500" />
-          <line x1="760" y1="180" x2="760" y2="680" />
+          <line x1="760" y1="180" x2="760" y2="620" />
           <line x1="760" y1="180" x2="810" y2="180" />
-          <line x1="760" y1="430" x2="810" y2="430" />
-          <line x1="760" y1="680" x2="810" y2="680" />
+          <line x1="760" y1="400" x2="810" y2="400" />
+          <line x1="760" y1="620" x2="810" y2="620" />
 
           <!-- Downwards branches into Generation 3 (Marcelino & Florida) -->
           <line x1="560" y1="520" x2="560" y2="800" />
@@ -227,10 +238,10 @@ app.innerHTML = `
         ${renderVerticalCard('cristina', 'left: 24%; top: 25%;')}
         ${renderVerticalCard('jeffrey', 'left: 68%; top: 25%;')}
 
-        <!-- Sibling vertical cards stacked on right with NO OVERLAP -->
+        <!-- Sibling vertical cards stacked on right with INCREASED SPACING -->
         ${renderVerticalCard('janice', 'left: 86%; top: 18%;')}
-        ${renderVerticalCard('jerome', 'left: 86%; top: 43%;')}
-        ${renderVerticalCard('jefferex', 'left: 86%; top: 68%;')}
+        ${renderVerticalCard('jerome', 'left: 86%; top: 40%;')}
+        ${renderVerticalCard('jefferex', 'left: 86%; top: 62%;')}
 
         <!-- Single-Line Connector Pill Badges with MORE SPACING from trunk -->
         <div class="connector-pill" style="left: 24%; top: 58%;">Child of Flordeliza and Domingo</div>
@@ -258,11 +269,11 @@ app.innerHTML = `
         <!-- Clean Solid Orthogonal Connector Lines (Florida & Filomena connect to Pablo) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
           <!-- Left branch: Enters at x=180, drops to TOP of Flordeliza -->
-          <line x1="180" y1="0" x2="180" y2="175" />
+          <line x1="180" y1="0" x2="180" y2="165" />
           <!-- Resumes from BOTTOM of Flordeliza to TOP of Domingo -->
-          <line x1="180" y1="385" x2="180" y2="455" />
+          <line x1="180" y1="375" x2="180" y2="470" />
           <!-- Resumes from BOTTOM of Domingo to pill -->
-          <line x1="180" y1="665" x2="180" y2="760" />
+          <line x1="180" y1="680" x2="180" y2="760" />
           <line x1="180" y1="800" x2="180" y2="1000" />
 
           <!-- Center: Enters at x=500, drops to TOP of Marcelino, then to pill, then Gen 4 -->
@@ -275,19 +286,19 @@ app.innerHTML = `
           <line x1="500" y1="800" x2="500" y2="1000" />
           
           <!-- Right branch: Pablo line drops to Florida and Filomena -->
-          <line x1="780" y1="800" x2="780" y2="175" />
+          <line x1="780" y1="800" x2="780" y2="165" />
           <!-- Resumes from BOTTOM of Florida to TOP of Filomena -->
-          <line x1="780" y1="385" x2="780" y2="455" />
+          <line x1="780" y1="375" x2="780" y2="470" />
           <!-- Continue down from Filomena to Gen 4 -->
-          <line x1="780" y1="665" x2="780" y2="1000" />
+          <line x1="780" y1="680" x2="780" y2="1000" />
         </svg>
 
         <!-- Generation 3 Distinct Vertical Cards (Completely Separated) -->
-        ${renderVerticalCard('flordeliza', 'left: 18%; top: 28%;')}
-        ${renderVerticalCard('domingo', 'left: 18%; top: 56%;')}
+        ${renderVerticalCard('flordeliza', 'left: 18%; top: 25%;')}
+        ${renderVerticalCard('domingo', 'left: 18%; top: 58%;')}
         ${renderVerticalCard('marcelino', 'left: 50%; top: 35%;')}
-        ${renderVerticalCard('florida', 'left: 78%; top: 28%;')}
-        ${renderVerticalCard('filomena', 'left: 78%; top: 56%;')}
+        ${renderVerticalCard('florida', 'left: 78%; top: 25%;')}
+        ${renderVerticalCard('filomena', 'left: 78%; top: 58%;')}
 
         <!-- Single-Line Connector Pill Badges -->
         <div class="connector-pill" style="left: 18%; top: 78%;">Child of Timoteo and Maria</div>
@@ -315,39 +326,40 @@ app.innerHTML = `
         <!-- Clean Solid Orthogonal Connector Lines (Pablo & Gloria as parents) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
           <!-- Left branch: Inflow enters at x=180, drops to TOP of Timoteo -->
-          <line x1="180" y1="0" x2="180" y2="175" />
+          <line x1="180" y1="0" x2="180" y2="165" />
           <!-- Resumes from BOTTOM of Timoteo to TOP of Maria -->
-          <line x1="180" y1="385" x2="180" y2="575" />
+          <line x1="180" y1="375" x2="180" y2="590" />
 
           <!-- Right branch: Inflow from x=780 drops to TOP of Pablo -->
-          <line x1="780" y1="0" x2="780" y2="175" />
+          <line x1="780" y1="0" x2="780" y2="165" />
           <!-- Resumes from BOTTOM of Pablo to TOP of Gloria -->
-          <line x1="780" y1="385" x2="780" y2="575" />
+          <line x1="780" y1="375" x2="780" y2="590" />
           <!-- Resumes from BOTTOM of Gloria down to Siblings capsule -->
-          <line x1="780" y1="785" x2="780" y2="860" />
+          <line x1="780" y1="800" x2="780" y2="860" />
 
-          <!-- From Siblings capsule to Calalang vertical bracket spine -->
-          <line x1="720" y1="880" x2="670" y2="880" />
-          <line x1="670" y1="180" x2="670" y2="880" />
+          <!-- From Siblings capsule horizontally to vertical spine -->
+          <line x1="840" y1="880" x2="860" y2="880" />
+          <!-- Vertical spine connecting all Calalang siblings -->
+          <line x1="860" y1="120" x2="860" y2="890" />
 
-          <!-- 8 Horizontal branches connecting to remaining Calalang capsules (not Pablo) -->
-          <line x1="670" y1="180" x2="740" y2="180" />
-          <line x1="670" y1="270" x2="740" y2="270" />
-          <line x1="670" y1="360" x2="740" y2="360" />
-          <line x1="670" y1="450" x2="740" y2="450" />
-          <line x1="670" y1="540" x2="740" y2="540" />
-          <line x1="670" y1="630" x2="740" y2="630" />
-          <line x1="670" y1="720" x2="740" y2="720" />
-          <line x1="670" y1="810" x2="740" y2="810" />
+          <!-- 8 Horizontal branches connecting to Calalang sibling capsules -->
+          <line x1="860" y1="120" x2="880" y2="120" />
+          <line x1="860" y1="230" x2="880" y2="230" />
+          <line x1="860" y1="340" x2="880" y2="340" />
+          <line x1="860" y1="450" x2="880" y2="450" />
+          <line x1="860" y1="560" x2="880" y2="560" />
+          <line x1="860" y1="670" x2="880" y2="670" />
+          <line x1="860" y1="780" x2="880" y2="780" />
+          <line x1="860" y1="890" x2="880" y2="890" />
         </svg>
 
         <!-- Generation 4 Distinct Vertical Cards -->
-        ${renderVerticalCard('timoteo', 'left: 18%; top: 28%;')}
-        ${renderVerticalCard('maria', 'left: 18%; top: 68%;')}
+        ${renderVerticalCard('timoteo', 'left: 18%; top: 25%;')}
+        ${renderVerticalCard('maria', 'left: 18%; top: 70%;')}
 
         <!-- Right side: Pablo & Gloria as parents -->
-        ${renderVerticalCard('pablo', 'left: 78%; top: 28%;')}
-        ${renderVerticalCard('gloria', 'left: 78%; top: 68%;')}
+        ${renderVerticalCard('pablo', 'left: 78%; top: 25%;')}
+        ${renderVerticalCard('gloria', 'left: 78%; top: 70%;')}
         
         <!-- Siblings capsule below Gloria -->
         <div class="connector-pill siblings-capsule" style="left: 78%; top: 88%;" aria-label="Siblings">
@@ -355,14 +367,14 @@ app.innerHTML = `
         </div>
 
         <!-- Right Side: 8 Calalang Siblings (Pablo's siblings, not including him) -->
-        ${renderCapsule('ely', 'left: 94%; top: 18%;')}
-        ${renderCapsule('anicia', 'left: 94%; top: 27%;')}
-        ${renderCapsule('linda', 'left: 94%; top: 36%;')}
-        ${renderCapsule('tricing', 'left: 94%; top: 45%;')}
-        ${renderCapsule('corazon', 'left: 94%; top: 54%;')}
-        ${renderCapsule('rody', 'left: 94%; top: 63%;')}
-        ${renderCapsule('erming', 'left: 94%; top: 72%;')}
-        ${renderCapsule('juanito', 'left: 94%; top: 81%;')}
+        ${renderCapsule('ely', 'left: 88%; top: 12%;')}
+        ${renderCapsule('anicia', 'left: 88%; top: 23%;')}
+        ${renderCapsule('linda', 'left: 88%; top: 34%;')}
+        ${renderCapsule('tricing', 'left: 88%; top: 45%;')}
+        ${renderCapsule('corazon', 'left: 88%; top: 56%;')}
+        ${renderCapsule('rody', 'left: 88%; top: 67%;')}
+        ${renderCapsule('erming', 'left: 88%; top: 78%;')}
+        ${renderCapsule('juanito', 'left: 88%; top: 89%;')}
       </div>
     </section>
 
