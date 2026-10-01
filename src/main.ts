@@ -706,7 +706,7 @@ initLeaves();
 // Music Player Functionality
 // ========================================================
 const musicBtn = document.getElementById('music-btn') as HTMLButtonElement;
-const musicIcon = document.getElementById('music-icon') as SVGElement;
+const musicIcon = document.getElementById('music-icon') as unknown as SVGSVGElement;
 const backgroundMusic = document.getElementById('background-music') as HTMLAudioElement;
 const trackSlider = document.getElementById('track-slider') as HTMLInputElement;
 const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
@@ -716,12 +716,21 @@ const volumeDisplay = document.getElementById('volume-display') as HTMLSpanEleme
 
 let isPlaying = false;
 
-// SVG icons
-const playIconSVG = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-const pauseIconSVG = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+// SVG icon paths
+const playIconPath = 'M5 3l14 9-14 9V3z';
+const pauseIconPaths = 'M6 4h4v16H6V4zm8 0h4v16h-4V4z';
 
 // Set initial volume
 backgroundMusic.volume = 0.7;
+
+// Helper to update icon
+function updateMusicIcon(isPlaying: boolean) {
+  if (isPlaying) {
+    musicIcon.innerHTML = `<rect x="6" y="4" width="4" height="16" fill="currentColor"></rect><rect x="14" y="4" width="4" height="16" fill="currentColor"></rect>`;
+  } else {
+    musicIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>`;
+  }
+}
 
 // Format time helper
 function formatTime(seconds: number): string {
@@ -735,7 +744,7 @@ musicBtn.addEventListener('click', () => {
   if (isPlaying) {
     // Pause music
     backgroundMusic.pause();
-    musicIcon.innerHTML = playIconSVG;
+    updateMusicIcon(false);
     musicBtn.classList.remove('playing');
     isPlaying = false;
   } else {
@@ -743,7 +752,7 @@ musicBtn.addEventListener('click', () => {
     backgroundMusic.play().catch(error => {
       console.error('Error playing music:', error);
     });
-    musicIcon.innerHTML = pauseIconSVG;
+    updateMusicIcon(true);
     musicBtn.classList.add('playing');
     isPlaying = true;
   }
@@ -779,7 +788,7 @@ volumeSlider.addEventListener('input', () => {
 
 // Handle audio ended event (in case loop fails)
 backgroundMusic.addEventListener('ended', () => {
-  musicIcon.innerHTML = playIconSVG;
+  updateMusicIcon(false);
   musicBtn.classList.remove('playing');
   isPlaying = false;
 });
