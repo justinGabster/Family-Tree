@@ -184,7 +184,7 @@ h4,
 }
 
 /* ========================================================
-   GENERATION SECTION PANELS (1920ù1080 OPTIMIZED)
+   GENERATION SECTION PANELS (1920x1080 OPTIMIZED)
    ======================================================== */
 .generation-section {
   position: relative;
@@ -201,7 +201,7 @@ h4,
   z-index: 4;
 }
 
-/* Panel inner bounds matching 1920ù1080 coordinate space */
+/* Panel inner bounds matching 1920x1080 coordinate space */
 .panel-inner {
   position: relative;
   width: 100%;
