@@ -184,7 +184,7 @@ h4,
 }
 
 /* ========================================================
-   GENERATION SECTION PANELS (1920√ó1080 OPTIMIZED)
+   GENERATION SECTION PANELS (1920ù1080 OPTIMIZED)
    ======================================================== */
 .generation-section {
   position: relative;
@@ -201,7 +201,7 @@ h4,
   z-index: 4;
 }
 
-/* Panel inner bounds matching 1920√ó1080 coordinate space */
+/* Panel inner bounds matching 1920ù1080 coordinate space */
 .panel-inner {
   position: relative;
   width: 100%;
@@ -289,6 +289,218 @@ h4,
 }
 
 /* ========================================================
+   MUSIC PLAYER BUTTON (NEXT TO METHODOLOGY)
+   ======================================================== */
+.music-player-container {
+  position: fixed;
+  top: 1.7rem;
+  left: 12.5rem;
+  z-index: 50;
+}
+
+.music-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-med);
+}
+
+.music-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: var(--accent-color);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+.music-btn:active {
+  transform: translateY(0) scale(1);
+}
+
+.music-btn-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.music-btn.playing .music-btn-icon {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ========================================================
+   MUSIC CONTROLS DROPDOWN
+   ======================================================== */
+.music-controls-dropdown {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 280px;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+/* Invisible bridge to prevent dropdown from closing when moving mouse from button to dropdown */
+.music-controls-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: transparent;
+}
+
+.music-player-container:hover .music-controls-dropdown,
+.music-controls-dropdown:hover {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+/* Track Controls */
+.track-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.time-display {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  min-width: 32px;
+}
+
+.track-slider {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.track-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.track-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.track-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease;
+}
+
+.track-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Volume Controls */
+.volume-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.volume-controls svg {
+  flex-shrink: 0;
+  color: var(--text-primary);
+}
+
+.volume-slider {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease;
+}
+
+.volume-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+.volume-display {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ========================================================
    SCROLL INDICATOR (BOUNCING ARROW) - PANELS 1, 2, 3
    ======================================================== */
 .scroll-indicator {
@@ -370,7 +582,7 @@ h4,
    Photo on left, Name on right on a natural single line
    ======================================================== */
 .horizontal-card {
-  width: 440px;
+  width: 380px;
   height: fit-content;
   border-radius: 1.5rem;
   display: flex;
@@ -651,7 +863,7 @@ h4,
   padding: 2.2rem 2rem;
   border-radius: 1.5rem;
   width: 90%;
-  max-width: 360px;
+  max-width: 280px;
   aspect-ratio: 4 / 6;
   max-height: 85vh;
   overflow-y: auto;
@@ -777,6 +989,13 @@ h4,
 
 .methodology-body p {
   margin: 0;
+}
+
+.methodology-body h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.35rem 0;
 }
 
 /* ========================================================

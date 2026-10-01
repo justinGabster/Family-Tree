@@ -133,9 +133,43 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 app.innerHTML = `
   <!-- Persistent Methodology Button (Top Left) -->
   <button class="methodology-btn" id="methodology-btn" type="button" aria-label="Methodology">
-    <span class="methodology-btn-icon">📖</span>
+    <span class="methodology-btn-icon">?</span>
     <span class="methodology-btn-text">Methodology</span>
   </button>
+
+  <!-- Music Player Button (Next to Methodology) -->
+  <div class="music-player-container">
+    <button class="music-btn" id="music-btn" type="button" aria-label="Toggle Music">
+      <svg class="music-btn-icon" id="music-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+    </button>
+
+    <!-- Music Player Controls Dropdown -->
+    <div class="music-controls-dropdown" id="music-controls-dropdown">
+      <!-- Track Progress -->
+      <div class="track-controls">
+        <span class="time-display" id="current-time">0:00</span>
+        <input type="range" class="track-slider" id="track-slider" min="0" max="100" value="0" step="0.1">
+        <span class="time-display" id="duration-time">0:00</span>
+      </div>
+      
+      <!-- Volume Control -->
+      <div class="volume-controls">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70" step="1">
+        <span class="volume-display" id="volume-display">70%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Audio Element -->
+  <audio id="background-music" loop>
+    <source src="/music.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- Tree background container with flashlight effect (fixed full viewport, zero drift) -->
   <div class="tree-bg-container">
@@ -154,7 +188,7 @@ app.innerHTML = `
         
         <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">🌱</span>
+          <span class="season-icon">I</span>
           <h2 class="serif">1st Generation: The Future & Branches</h2>
         </div>
 
@@ -164,13 +198,27 @@ app.innerHTML = `
 
         <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, EXACT EDGES) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Lines drop from bottom center of Justin and Lance cards -->
+          <!-- 
+            HOW TO ADJUST LINES:
+            - x1, y1 = start point (x: 0-1000 left?right, y: 0-1000 top?bottom)
+            - x2, y2 = end point
+            - VERTICAL line: x1=x2 (same x), adjust y values
+            - HORIZONTAL line: y1=y2 (same y), adjust x values
+          -->
+          
+          <!-- Justin card bottom ? down | Change y2 to lengthen/shorten -->
           <line x1="280" y1="465" x2="280" y2="620" />
+          
+          <!-- Lance card bottom ? down | Change y2 to lengthen/shorten -->
           <line x1="720" y1="465" x2="720" y2="620" />
+          
+          <!-- Horizontal: joins Justin & Lance | Change x1/x2 for width -->
           <path d="M 280 620 L 720 620" />
+          
+          <!-- Center ? down to pill | Change y2 for gap -->
           <line x1="500" y1="620" x2="500" y2="700" />
           
-          <!-- From bottom of pill straight down to Generation 2 -->
+          <!-- Pill bottom ? down to Gen 2 | Change y1 to adjust gap from pill -->
           <line x1="500" y1="740" x2="500" y2="1000" />
         </svg>
 
@@ -192,56 +240,88 @@ app.innerHTML = `
       <div class="panel-inner">
         <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">☀︝</span>
+          <span class="season-icon">II</span>
           <h2 class="serif">2nd Generation: The Parents & Trunks</h2>
         </div>
 
         <!-- Clean Solid Orthogonal Connector Lines (NO ARROWS, ZERO INTERSECTIONS) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Inflow from Gen 1 at x=500, splits horizontally then drops to card tops -->
+          <!--
+            ADJUSTMENT GUIDE:
+            x1,y1 = start | x2,y2 = end
+            Vertical: x1=x2 | Horizontal: y1=y2
+          -->
+          
+          <!-- From Gen 1 ? down | Adjust y2 for split point -->
           <line x1="500" y1="0" x2="500" y2="80" />
+          
+          <!-- Horizontal split: Cristina ? ? Jeffrey | Adjust x1/x2 for spacing -->
           <path d="M 240 80 L 680 80" />
           
-          <!-- Left branch: drops to TOP of Cristina card (not through it) -->
+          <!-- Split ? down to Cristina top | Adjust y2 to card top -->
           <line x1="240" y1="80" x2="240" y2="145" />
           
-          <!-- Right branch: drops to TOP of Jeffrey card (not through it) -->
+          <!-- Split ? down to Jeffrey top | Adjust y2 to card top -->
           <line x1="680" y1="80" x2="680" y2="145" />
 
-          <!-- Under Cristina: resumes from BOTTOM edge, connects down to Child pill -->
+          <!-- Cristina bottom ? down to pill area | Adjust y1 (card bottom) & y2 -->
           <line x1="240" y1="355" x2="240" y2="560" />
           <line x1="240" y1="600" x2="240" y2="750" />
+          
+          <!-- Turn left toward Flordeliza | Adjust x2 for position -->
           <line x1="240" y1="750" x2="180" y2="750" />
+          
+          <!-- Down to Gen 3 | Adjust y1/y2 for length -->
           <line x1="180" y1="750" x2="180" y2="1000" />
 
-          <!-- Under Jeffrey: resumes from BOTTOM edge to Children pill -->
+          <!-- Jeffrey bottom ? down | Adjust y1 (card bottom) -->
           <line x1="680" y1="355" x2="680" y2="405" />
+          
+          <!-- Turn left toward center pill | Adjust x2 for pill position -->
           <line x1="680" y1="405" x2="560" y2="405" />
+          
+          <!-- Down to Children pill | Adjust y2 to pill top -->
           <line x1="560" y1="405" x2="560" y2="480" />
 
-          <!-- Children of Florinda pill splits right with MORE SPACING from trunk -->
+          <!-- From Children pill ? right to siblings vertical trunk -->
           <line x1="660" y1="500" x2="760" y2="500" />
-          <line x1="760" y1="180" x2="760" y2="620" />
-          <line x1="760" y1="180" x2="810" y2="180" />
-          <line x1="760" y1="400" x2="810" y2="400" />
-          <line x1="760" y1="620" x2="810" y2="620" />
+          
+          <!-- Siblings vertical trunk | Adjust y1/y2 for range -->
+          <line x1="760" y1="250" x2="760" y2="850" />
+          
+          <!-- Trunk ? Janice | Adjust x2 to capsule -->
+          <line x1="760" y1="250" x2="810" y2="250" />
+          
+          <!-- Trunk ? Jerome | Adjust x2 to capsule -->
+          <line x1="760" y1="550" x2="810" y2="550" />
+          
+          <!-- Trunk ? Jefferex | Adjust x2 to capsule -->
+          <line x1="760" y1="850" x2="810" y2="850" />
 
-          <!-- Downwards branches into Generation 3 (Marcelino & Florida) -->
+          <!-- Children pill ? down | For Gen 3 branch -->
           <line x1="560" y1="520" x2="560" y2="800" />
+          
+          <!-- Horizontal split: Marcelino ? ? Florida -->
           <line x1="560" y1="800" x2="500" y2="800" />
+          
+          <!-- Marcelino branch ? down to Gen 3 -->
           <line x1="500" y1="800" x2="500" y2="1000" />
+          
+          <!-- Continue horizontal to Florida branch -->
           <line x1="560" y1="800" x2="760" y2="800" />
-          <line x1="760" y1="800" x2="760" y2="1000" />
+          
+          <!-- Florida branch ? down to Gen 3 -->
+          <line x1="730" y1="800" x2="730" y2="1000" />
         </svg>
 
-        <!-- Generation 2 Distinct Vertical Cards (Never Overlapping) -->
-        ${renderVerticalCard('cristina', 'left: 24%; top: 25%;')}
+        <!-- Generation 2 Cards -->
+        ${renderHorizontalCard('cristina', 'left: 24%; top: 25%;')}
         ${renderVerticalCard('jeffrey', 'left: 68%; top: 25%;')}
 
         <!-- Sibling vertical cards stacked on right with INCREASED SPACING -->
-        ${renderVerticalCard('janice', 'left: 86%; top: 18%;')}
-        ${renderVerticalCard('jerome', 'left: 86%; top: 40%;')}
-        ${renderVerticalCard('jefferex', 'left: 86%; top: 62%;')}
+        ${renderVerticalCard('janice', 'left: 86%; top: 25%;')}
+        ${renderVerticalCard('jerome', 'left: 86%; top: 55%;')}
+        ${renderVerticalCard('jefferex', 'left: 86%; top: 85%;')}
 
         <!-- Single-Line Connector Pill Badges with MORE SPACING from trunk -->
         <div class="connector-pill" style="left: 24%; top: 58%;">Child of Flordeliza and Domingo</div>
@@ -262,47 +342,65 @@ app.innerHTML = `
       <div class="panel-inner">
         <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">🝝</span>
+          <span class="season-icon">III</span>
           <h2 class="serif">3rd Generation: The Grandparents & Foundations</h2>
         </div>
 
         <!-- Clean Solid Orthogonal Connector Lines (Florida & Filomena connect to Pablo) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Left branch: Enters at x=180, drops to TOP of Flordeliza -->
-          <line x1="180" y1="0" x2="180" y2="165" />
-          <!-- Resumes from BOTTOM of Flordeliza to TOP of Domingo -->
-          <line x1="180" y1="375" x2="180" y2="470" />
-          <!-- Resumes from BOTTOM of Domingo to pill -->
+          <!-- From Gen 2 down to Flordeliza top -->
+          <line x1="180 " y1="0" x2="180" y2="165" />
+          
+          <!-- Flordeliza bottom to horizontal connector between Flordeliza and Domingo -->
+         
+          
+          <!-- Horizontal connector between Flordeliza and Domingo (couple connection) -->
+          <line x1="25" y1="250" x2="145" y2="250" />
+          <line x1="25" y1="250" x2="25" y2="625" />
+<line x1="25" y1="625" x2="145" y2="625" />
+          
+          <!-- Domingo bottom down to pill -->
           <line x1="180" y1="680" x2="180" y2="760" />
+          
+          <!-- Below pill down to Gen 4 -->
           <line x1="180" y1="800" x2="180" y2="1000" />
 
-          <!-- Center: Enters at x=500, drops to TOP of Marcelino, then to pill, then Gen 4 -->
+          <!-- From Gen 2 center down to Marcelino top -->
           <line x1="500" y1="0" x2="500" y2="245" />
-          <line x1="500" y1="455" x2="500" y2="560" />
-          <line x1="500" y1="600" x2="500" y2="800" />
           
-          <!-- Branch from center to Pablo line at x=780 -->
-          <line x1="500" y1="800" x2="780" y2="800" />
-          <line x1="500" y1="800" x2="500" y2="1000" />
-          
-          <!-- Right branch: Pablo line drops to Florida and Filomena -->
-          <line x1="780" y1="800" x2="780" y2="165" />
-          <!-- Resumes from BOTTOM of Florida to TOP of Filomena -->
-          <line x1="780" y1="375" x2="780" y2="470" />
-          <!-- Continue down from Filomena to Gen 4 -->
-          <line x1="780" y1="680" x2="780" y2="1000" />
-        </svg>
+          <!-- Bracket connecting Florida and Filomena on the left, fed by the Children pill -->
 
-        <!-- Generation 3 Distinct Vertical Cards (Completely Separated) -->
-        ${renderVerticalCard('flordeliza', 'left: 18%; top: 25%;')}
-        ${renderVerticalCard('domingo', 'left: 18%; top: 58%;')}
-        ${renderVerticalCard('marcelino', 'left: 50%; top: 35%;')}
+<!-- Vertical bracket spine between the tree and the two cards -->
+<line x1="685" y1="285" x2="685" y2="580" />
+
+<!-- Top branch into Florida left edge -->
+<line x1="685" y1="285" x2="720" y2="285" />
+
+<!-- Bottom branch into Filomena left edge -->
+<line x1="685" y1="580" x2="720" y2="580" />
+
+<!-- Stem from "Children of Pablo and Gloria" pill right edge into the bracket spine -->
+<line x1="575" y1="580" x2="685" y2="580" />
+                  
+          <!-- Below pill down -->
+          <line x1="550" y1="600" x2="550" y2="2000" />
+          
+          
+          <!-- Enters through the top of Gen 3 down into Florida -->
+<line x1="730" y1="0" x2="730" y2="165" />
+         
+                  </svg>
+
+        <!-- Generation 3 Distinct Cards -->
+        ${renderHorizontalCard('flordeliza', 'left: 18%; top: 25%;')}
+        ${renderHorizontalCard('domingo', 'left: 18%; top: 58%;')}
+        ${renderHorizontalCard('marcelino', 'left: 50%; top: 35%;')}
         ${renderVerticalCard('florida', 'left: 78%; top: 25%;')}
         ${renderVerticalCard('filomena', 'left: 78%; top: 58%;')}
 
         <!-- Single-Line Connector Pill Badges -->
         <div class="connector-pill" style="left: 18%; top: 78%;">Child of Timoteo and Maria</div>
-        <div class="connector-pill" style="left: 50%; top: 58%;">Children of Pablo and Gloria</div>
+        <div class="connector-pill" style="left: 60%; top: 58%;">Children of Pablo and Gloria</div>
       </div>
 
       <!-- Bouncing Scroll Down Indicator -->
@@ -319,62 +417,134 @@ app.innerHTML = `
       <div class="panel-inner">
         <!-- Right-Aligned Generation Title Header -->
         <div class="generation-header">
-          <span class="season-icon">❄︝</span>
+          <span class="season-icon">IV</span>
           <h2 class="serif">4th Generation: The Great Grandparents & Roots</h2>
         </div>
 
         <!-- Clean Solid Orthogonal Connector Lines (Pablo & Gloria as parents) -->
         <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Left branch: Inflow enters at x=180, drops to TOP of Timoteo -->
+          <!--
+            ADJUSTMENT GUIDE FOR PANEL 4:
+            x1,y1 = start point | x2,y2 = end point
+            VERTICAL line: x1=x2 (keep x same) | HORIZONTAL line: y1=y2 (keep y same)
+            Coordinate system: x=0-1000 (left?right), y=0-1000 (top?bottom)
+          -->
+          
+          <!-- LEFT SIDE: Timoteo & Maria branch -->
+          <!-- From Gen 3 down to Timoteo top -->
           <line x1="180" y1="0" x2="180" y2="165" />
-          <!-- Resumes from BOTTOM of Timoteo to TOP of Maria -->
-          <line x1="180" y1="375" x2="180" y2="590" />
+          
+          <!-- Timoteo & Maria vertical connector bracket -->
+          <line x1="60" y1="230" x2="60" y2="710" />
+          <!-- Top horizontal branch -->
+          <line x1="60" y1="230" x2="120" y2="230" />
+          <!-- Bottom horizontal branch -->
+          <line x1="60" y1="710" x2="120" y2="710" />
 
-          <!-- Right branch: Inflow from x=780 drops to TOP of Pablo -->
-          <line x1="780" y1="0" x2="780" y2="165" />
-          <!-- Resumes from BOTTOM of Pablo to TOP of Gloria -->
-          <line x1="780" y1="375" x2="780" y2="590" />
-          <!-- Resumes from BOTTOM of Gloria down to Siblings capsule -->
-          <line x1="780" y1="800" x2="780" y2="860" />
+          <!-- RIGHT SIDE: Pablo, Gloria, & Siblings branch -->
+          <!-- From Gen 3 down to Pablo top -->
+          <line x1="550" y1="0" x2="550" y2="165" />
+          
 
-          <!-- From Siblings capsule horizontally to vertical spine -->
-          <line x1="840" y1="880" x2="860" y2="880" />
-          <!-- Vertical spine connecting all Calalang siblings -->
-          <line x1="860" y1="120" x2="860" y2="890" />
+          <!-- Pablo & Gloria vertical connector bracket -->
+          <line x1="485" y1="240" x2="525" y2="240" />
+          <line x1="485" y1="240" x2="485" y2="685" />
+          <line x1="485" y1="685" x2="590" y2="685" />
 
-          <!-- 8 Horizontal branches connecting to Calalang sibling capsules -->
-          <line x1="860" y1="120" x2="880" y2="120" />
-          <line x1="860" y1="230" x2="880" y2="230" />
-          <line x1="860" y1="340" x2="880" y2="340" />
-          <line x1="860" y1="450" x2="880" y2="450" />
-          <line x1="860" y1="560" x2="880" y2="560" />
-          <line x1="860" y1="670" x2="880" y2="670" />
-          <line x1="860" y1="780" x2="880" y2="780" />
-          <line x1="860" y1="890" x2="880" y2="890" />
+          <!-- Pablo bottom edge -> Siblings top edge -->
+          <line x1="700" y1="360" x2="700" y2="478" />
+
+          <!-- Siblings right edge -> vertical sibling spine (x=798) -->
+          <line x1="720" y1="478" x2="798" y2="478" />
+          
+          <!-- Vertical spine: connects all 8 siblings | Adjust y1 (top) & y2 (bottom) for spine length -->
+          <line x1="798" y1="145" x2="798" y2="925" />
+
+       <!-- 8 Horizontal branches: spine (x=798) ? sibling capsules (x=838) -->
+          <!-- Branch to Ely (top sibling) -->
+          <line x1="798" y1="145" x2="838" y2="145" />
+          
+          <!-- Branch to Anicia -->
+          <line x1="798" y1="256" x2="838" y2="256" />
+          
+          <!-- Branch to Linda -->
+          <line x1="798" y1="367" x2="838" y2="367" />
+          
+          <!-- Branch to Tricing (middle sibling) -->
+          <line x1="798" y1="478" x2="838" y2="478" />
+          
+          <!-- Branch to Corazon -->
+          <line x1="798" y1="590" x2="838" y2="590" />
+          
+          <!-- Branch to Rody -->
+          <line x1="798" y1="701" x2="838" y2="701" />
+          
+          <!-- Branch to Erming -->
+          <line x1="798" y1="812" x2="838" y2="812" />
+          
+          <!-- Branch to Juanito (bottom sibling) -->
+          <line x1="798" y1="925" x2="838" y2="925" />
         </svg>
 
-        <!-- Generation 4 Distinct Vertical Cards -->
+        <!-- Generation 4 Distinct Cards -->
         ${renderVerticalCard('timoteo', 'left: 18%; top: 25%;')}
         ${renderVerticalCard('maria', 'left: 18%; top: 70%;')}
 
         <!-- Right side: Pablo & Gloria as parents -->
-        ${renderVerticalCard('pablo', 'left: 78%; top: 25%;')}
-        ${renderVerticalCard('gloria', 'left: 78%; top: 70%;')}
+        ${renderHorizontalCard('pablo', 'left: 65%; top: 25%;')}
+        ${renderVerticalCard('gloria', 'left: 65%; top: 70%;')}
         
         <!-- Siblings capsule below Gloria -->
-        <div class="connector-pill siblings-capsule" style="left: 78%; top: 88%;" aria-label="Siblings">
+        <div class="connector-pill siblings-capsule" style="left: 70%; top: 48%;" aria-label="Siblings">
           Siblings
         </div>
 
         <!-- Right Side: 8 Calalang Siblings (Pablo's siblings, not including him) -->
-        ${renderCapsule('ely', 'left: 88%; top: 12%;')}
-        ${renderCapsule('anicia', 'left: 88%; top: 23%;')}
-        ${renderCapsule('linda', 'left: 88%; top: 34%;')}
-        ${renderCapsule('tricing', 'left: 88%; top: 45%;')}
-        ${renderCapsule('corazon', 'left: 88%; top: 56%;')}
-        ${renderCapsule('rody', 'left: 88%; top: 67%;')}
-        ${renderCapsule('erming', 'left: 88%; top: 78%;')}
-        ${renderCapsule('juanito', 'left: 88%; top: 89%;')}
+        ${renderCapsule('ely', 'left: 88%; top: 15%;')}
+        ${renderCapsule('anicia', 'left: 88%; top: 26%;')}
+        ${renderCapsule('linda', 'left: 88%; top: 37%;')}
+        ${renderCapsule('tricing', 'left: 88%; top: 48%;')}
+        ${renderCapsule('corazon', 'left: 88%; top: 59%;')}
+        ${renderCapsule('rody', 'left: 88%; top: 70%;')}
+        ${renderCapsule('erming', 'left: 88%; top: 81%;')}
+        ${renderCapsule('juanito', 'left: 88%; top: 92%;')}
+      </div>
+
+      <!-- Bouncing Scroll Down Indicator -->
+      <button class="scroll-indicator" data-target="#gen-5" aria-label="Scroll to Generation 5">
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" /></svg>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         PANEL 5: GENERATION 5 (Ancient Roots & Origins)
+         ======================================================== -->
+    <section class="generation-section" id="gen-5" data-season="spring">
+      <div class="panel-inner">
+        <!-- Right-Aligned Generation Title Header -->
+        <div class="generation-header">
+          <span class="season-icon">V</span>
+          <h2 class="serif">5th Generation: The Ancient Roots & Origins</h2>
+        </div>
+
+        <!-- Clean Solid Orthogonal Connector Lines -->
+        <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <!-- Connector lines from Gen 4 -->
+          <line x1="180" y1="0" x2="180" y2="300" />
+          <line x1="500" y1="0" x2="500" y2="300" />
+          <line x1="780" y1="0" x2="780" y2="300" />
+        </svg>
+
+        <!-- Generation 5 Cards - Add your 5th generation members here -->
+        <!-- Example structure (uncomment and modify as needed):
+        ${renderVerticalCard('ancestor1', 'left: 18%; top: 35%;')}
+        ${renderVerticalCard('ancestor2', 'left: 50%; top: 35%;')}
+        ${renderVerticalCard('ancestor3', 'left: 78%; top: 35%;')}
+        -->
+        
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-primary); opacity: 0.6;">
+          <p style="font-size: 1.2rem; font-family: 'Playfair Display', serif;">5th Generation members can be added here</p>
+        </div>
       </div>
     </section>
 
@@ -481,11 +651,17 @@ if (methodologyBtn) {
         <div class="methodology-header">
           <span class="relation-tag">Project Overview</span>
           <h2 class="serif">Methodology</h2>
-          <p class="methodology-subtitle">How this family tree was researched and preserved</p>
+          <p class="methodology-subtitle">How this family tree was researched and documented</p>
         </div>
         <div class="methodology-body">
-          <p>To build this family tree, I gathered stories and information by reaching out to our older and distant relatives, treating the whole thing like a personal research project. For my grandparents, these casual interviews brought back fond memories, everyday stories, and what they were like as people. I was also lucky enough to find old family albums, keepsakes, and journals with real vintage photos, which let me match their stories with clear faces from their era.</p>
-          <p>Things were a bit trickier for my great-grandparents since no physical photographs survived through the years. Instead of leaving their profiles blank, I based their bios entirely on the oral stories passed down by our relatives. By cross-checking the details everyone remembered about their work, character, and life in the community, I was able to piece together an honest picture of who they were at the roots of our family.</p>
+          <h3>Data Collection & Research Approach</h3>
+          <p>This project was carried out using a qualitative research approach to accurately identify four generations of family lineage and connections. Relatives were interviewed to trace lineages, confirm full names, and establish proper sibling groupings. Alongside these conversations, physical research was done by searching through old family journals, keepsake albums, and stored records. This made it possible to retrieve and digitize vintage photos, primarily across the second and third generations, ensuring authentic visual records were linked to each person's card.</p>
+          
+          <h3>Ethical Considerations</h3>
+          <p>Respect and privacy were strictly prioritized throughout the project. Consent was gathered from living relatives prior to digitizing and displaying their portraits and full names in the interactive tree. For deceased relatives, care was taken to record their names, lineage ties, and identities with accuracy, dignity, and respect.</p>
+          
+          <h3>Limitations</h3>
+          <p>The primary challenge encountered during the project was generational physical record loss. For some of the great-grandparents, no physical photographs, identification documents, or portraits survived through the decades. Because of this historical gap, their profiles are represented via initialed placeholder avatars, relying entirely on verified kinship accounts from living relatives rather than photographic proof.</p>
         </div>
       </div>
     `;
@@ -525,3 +701,85 @@ updateScrollOffset();
 
 // Initialize falling leaves animation
 initLeaves();
+
+// ========================================================
+// Music Player Functionality
+// ========================================================
+const musicBtn = document.getElementById('music-btn') as HTMLButtonElement;
+const musicIcon = document.getElementById('music-icon') as SVGElement;
+const backgroundMusic = document.getElementById('background-music') as HTMLAudioElement;
+const trackSlider = document.getElementById('track-slider') as HTMLInputElement;
+const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
+const currentTimeDisplay = document.getElementById('current-time') as HTMLSpanElement;
+const durationTimeDisplay = document.getElementById('duration-time') as HTMLSpanElement;
+const volumeDisplay = document.getElementById('volume-display') as HTMLSpanElement;
+
+let isPlaying = false;
+
+// SVG icons
+const playIconSVG = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+const pauseIconSVG = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+
+// Set initial volume
+backgroundMusic.volume = 0.7;
+
+// Format time helper
+function formatTime(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Play/Pause button click
+musicBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    // Pause music
+    backgroundMusic.pause();
+    musicIcon.innerHTML = playIconSVG;
+    musicBtn.classList.remove('playing');
+    isPlaying = false;
+  } else {
+    // Play music
+    backgroundMusic.play().catch(error => {
+      console.error('Error playing music:', error);
+    });
+    musicIcon.innerHTML = pauseIconSVG;
+    musicBtn.classList.add('playing');
+    isPlaying = true;
+  }
+});
+
+// Update track progress
+backgroundMusic.addEventListener('timeupdate', () => {
+  if (!backgroundMusic.duration) return;
+  
+  const progress = (backgroundMusic.currentTime / backgroundMusic.duration) * 100;
+  trackSlider.value = progress.toString();
+  currentTimeDisplay.textContent = formatTime(backgroundMusic.currentTime);
+});
+
+// Update duration display when metadata loads
+backgroundMusic.addEventListener('loadedmetadata', () => {
+  durationTimeDisplay.textContent = formatTime(backgroundMusic.duration);
+  trackSlider.max = '100';
+});
+
+// Track slider input
+trackSlider.addEventListener('input', () => {
+  const seekTime = (parseFloat(trackSlider.value) / 100) * backgroundMusic.duration;
+  backgroundMusic.currentTime = seekTime;
+});
+
+// Volume slider input
+volumeSlider.addEventListener('input', () => {
+  const volume = parseFloat(volumeSlider.value) / 100;
+  backgroundMusic.volume = volume;
+  volumeDisplay.textContent = `${volumeSlider.value}%`;
+});
+
+// Handle audio ended event (in case loop fails)
+backgroundMusic.addEventListener('ended', () => {
+  musicIcon.innerHTML = playIconSVG;
+  musicBtn.classList.remove('playing');
+  isPlaying = false;
+});
