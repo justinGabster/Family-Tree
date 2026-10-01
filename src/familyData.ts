@@ -2,7 +2,7 @@ export interface FamilyMember {
   id: string;
   name: string;
   relation: string;
-  generation: 1 | 2 | 3 | 4;
+  generation: 1 | 2 | 3 | 4 | 5;
   photoUrl: string;
   shortBio?: string;
   notableMilestones?: string[];
@@ -223,5 +223,23 @@ export const familyData: FamilyMember[] = [
     generation: 4,
     photoUrl: '/juanito.jpg',
     shortBio: 'Son of Pablo and Gloria Calalang.'
+  },
+
+  // ==========================================
+  // GENERATION 5: Ancient Roots & Origins
+  // ==========================================
+  {
+    id: 'francisco',
+    name: 'Francisco Calalang',
+    relation: 'Great-Great-Grandfather',
+    generation: 5,
+    photoUrl: ''
+  },
+  {
+    id: 'anastacia',
+    name: 'Anastacia Cruz',
+    relation: 'Great-Great-Grandmother',
+    generation: 5,
+    photoUrl: ''
   }
 ];

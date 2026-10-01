@@ -449,8 +449,8 @@ app.innerHTML = `
           <!-- Pablo & Gloria vertical connector bracket -->
           <line x1="485" y1="240" x2="525" y2="240" />
           <line x1="485" y1="240" x2="485" y2="685" />
-          <line x1="485" y1="685" x2="590" y2="685" />
-
+          <line x1="600" y1="500" x2="600" y2="5000" />
+          
           <!-- Pablo bottom edge -> Siblings top edge -->
           <line x1="700" y1="360" x2="700" y2="478" />
 
@@ -492,11 +492,11 @@ app.innerHTML = `
 
         <!-- Right side: Pablo & Gloria as parents -->
         ${renderHorizontalCard('pablo', 'left: 65%; top: 25%;')}
-        ${renderVerticalCard('gloria', 'left: 65%; top: 70%;')}
+        ${renderVerticalCard('gloria', 'left: 48%; top: 70%;')}
         
         <!-- Siblings capsule below Gloria -->
-        <div class="connector-pill siblings-capsule" style="left: 70%; top: 48%;" aria-label="Siblings">
-          Siblings
+        <div class="connector-pill siblings-capsule" style="left: 66%; top: 48%;" aria-label="Children of Francisco and Anastacia">
+          Children of Francisco and Anastacia
         </div>
 
         <!-- Right Side: 8 Calalang Siblings (Pablo's siblings, not including him) -->
@@ -508,6 +508,41 @@ app.innerHTML = `
         ${renderCapsule('rody', 'left: 88%; top: 70%;')}
         ${renderCapsule('erming', 'left: 88%; top: 81%;')}
         ${renderCapsule('juanito', 'left: 88%; top: 92%;')}
+      </div>
+
+      <!-- Bouncing Scroll Down Indicator -->
+      <button class="scroll-indicator" data-target="#gen-5" aria-label="Scroll to Generation 5">
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" /></svg>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         PANEL 5: GENERATION 5 (Ancient Roots & Origins)
+         ======================================================== -->
+    <section class="generation-section" id="gen-5" data-season="spring">
+      <div class="panel-inner">
+        <!-- Right-Aligned Generation Title Header -->
+        <div class="generation-header">
+          <span class="season-icon">V</span>
+          <h2 class="serif">5th Generation: The Ancient Roots & Origins</h2>
+        </div>
+
+        <!-- Clean Solid Orthogonal Connector Lines -->
+        <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+          <!-- Connector lines from Gen 4 -->
+          
+         
+          <line x1="600" y1="0" x2="600" y2="200" />
+
+          <!-- Couple bracket linking Francisco and Anastacia (left side) -->
+          <line x1="460" y1="300" x2="485" y2="300" />
+          <line x1="460" y1="300" x2="460" y2="650" />
+          <line x1="460" y1="650" x2="485" y2="650" />
+        </svg>
+
+        <!-- Generation 5 Horizontal Cards -->
+        ${renderHorizontalCard('francisco', 'left: 60%; top: 30%;')}
+        ${renderHorizontalCard('anastacia', 'left: 60%; top: 65%;')}
       </div>
     </section>
 
