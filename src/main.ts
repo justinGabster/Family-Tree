@@ -509,43 +509,6 @@ app.innerHTML = `
         ${renderCapsule('erming', 'left: 88%; top: 81%;')}
         ${renderCapsule('juanito', 'left: 88%; top: 92%;')}
       </div>
-
-      <!-- Bouncing Scroll Down Indicator -->
-      <button class="scroll-indicator" data-target="#gen-5" aria-label="Scroll to Generation 5">
-        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" /></svg>
-      </button>
-    </section>
-
-    <!-- ========================================================
-         PANEL 5: GENERATION 5 (Ancient Roots & Origins)
-         ======================================================== -->
-    <section class="generation-section" id="gen-5" data-season="spring">
-      <div class="panel-inner">
-        <!-- Right-Aligned Generation Title Header -->
-        <div class="generation-header">
-          <span class="season-icon">V</span>
-          <h2 class="serif">5th Generation: The Ancient Roots & Origins</h2>
-        </div>
-
-        <!-- Clean Solid Orthogonal Connector Lines -->
-        <svg class="connector-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-          <!-- Connector lines from Gen 4 -->
-          <line x1="180" y1="0" x2="180" y2="300" />
-          <line x1="500" y1="0" x2="500" y2="300" />
-          <line x1="780" y1="0" x2="780" y2="300" />
-        </svg>
-
-        <!-- Generation 5 Cards - Add your 5th generation members here -->
-        <!-- Example structure (uncomment and modify as needed):
-        ${renderVerticalCard('ancestor1', 'left: 18%; top: 35%;')}
-        ${renderVerticalCard('ancestor2', 'left: 50%; top: 35%;')}
-        ${renderVerticalCard('ancestor3', 'left: 78%; top: 35%;')}
-        -->
-        
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-primary); opacity: 0.6;">
-          <p style="font-size: 1.2rem; font-family: 'Playfair Display', serif;">5th Generation members can be added here</p>
-        </div>
-      </div>
     </section>
 
   </div>
