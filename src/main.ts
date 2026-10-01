@@ -168,7 +168,7 @@ app.innerHTML = `
 
   <!-- Hidden Audio Element -->
   <audio id="background-music" loop>
-    <source src="/music.mp3" type="audio/mpeg">
+    <source src="/music.mp3?v=photograph" type="audio/mpeg">
   </audio>
 
   <!-- Tree background container with flashlight effect (fixed full viewport, zero drift) -->
@@ -763,11 +763,15 @@ backgroundMusic.addEventListener('timeupdate', () => {
   currentTimeDisplay.textContent = formatTime(backgroundMusic.currentTime);
 });
 
-// Update duration display when metadata loads
-backgroundMusic.addEventListener('loadedmetadata', () => {
+// Update duration display from the actual audio file (works for any track)
+const updateDuration = () => {
+  if (!isFinite(backgroundMusic.duration)) return;
   durationTimeDisplay.textContent = formatTime(backgroundMusic.duration);
-  trackSlider.max = '100';
-});
+};
+backgroundMusic.addEventListener('loadedmetadata', updateDuration);
+backgroundMusic.addEventListener('durationchange', updateDuration);
+// In case metadata was already loaded (e.g. from cache) before listeners attached
+if (backgroundMusic.readyState >= 1) updateDuration();
 
 // Track slider input
 trackSlider.addEventListener('input', () => {
