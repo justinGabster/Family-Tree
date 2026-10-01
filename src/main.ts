@@ -716,10 +716,6 @@ const volumeDisplay = document.getElementById('volume-display') as HTMLSpanEleme
 
 let isPlaying = false;
 
-// SVG icon paths
-const playIconPath = 'M5 3l14 9-14 9V3z';
-const pauseIconPaths = 'M6 4h4v16H6V4zm8 0h4v16h-4V4z';
-
 // Set initial volume
 backgroundMusic.volume = 0.7;
 
